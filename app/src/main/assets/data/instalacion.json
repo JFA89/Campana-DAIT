@@ -1,0 +1,64 @@
+{
+  "instalacion": [
+    {
+      "nombre": "CAJA DE MEDIDOR",
+      "conclusion": "Material de Caja: Chapa / Plástica\nUbicación: Sala de medidores / Vía Pública / Propiedad privada\nInstalación: Muro de Fachada / Pilar de Conexión / Gabinete Colectivo / Poste\nObservaciones:\n                                           Informe\nTapa Faltante: No\nTapa rota o con bordes salientes: No\nTapa Abierta: No\nTapa con Intersticios-IP inadecuado: No\nVidrio roto: No\nCaja en mal estado (rota, corroída, suelta, etc): No\nCierre de tapa faltante o inadecuada: No\nVarios: No  "
+    },
+    {
+      "nombre": "CAJA TOMA",
+      "conclusion": "Función: Toma primaria / Toma secundaria / Conexión individual\nMaterial de Caja:   Chapa / Plástico\nUbicación: Sala de medidores / Vía pública /  Propiedad privada  \nInstalación: Muro de Fachada / Pilar de conexión / Gabinete colectivo\nObservaciones:\n                                   Informe\nTapa rota o con bordes salientes: No\nTapa Abierta: No\nTapa con Intersticios-IP inadecuado: No\nCaja en mal estado (rota, corroída, suelta, etc): No\nVarios: No"
+    },
+    {
+      "nombre": "PILAR DE CONEXIÓN",
+      "conclusion": "Instalación: Muro de Fachada / Pilar de Conexión / Gabinete colectivo / Poste\nAcometida: Aérea / Subterránea / Interna \n                                  Informe\nCables al alcance de la mano: No\nCaño en mal estado (oxidado, inclinado, con ramas, etc): No\nPipeta rota: No\nMampostería deteriorada: No\nAcometida en mal estado: No\nVarios: No"
+    },
+    {
+      "nombre": "BUZÓN",
+      "conclusion": "Instalación: Empotrado en pared / En vereda\nMaterial de Caja: Chapa / Plástico\n                                  Informe\nPuerta faltante: No\nPuerta rota: No\nPuerta Abierta: No\nPuerta con intersticios-IP inadecuado: No\nVentilación obstruida: No\nEstructura deteriorada: No\nPuerta con cierre faltante o defectuoso: No\nVarios: No"
+    },
+    {
+      "nombre": "CAJA ESQUINERA",
+      "conclusion": "Observaciones:\n Informe\nTapa faltante: No\nTapa rota: No\nTapa abierta: No\nTapa con intersticios-IP inadecuado: No\nTapa con brusco desnivel: No\nEstructura deteriorada: No\nVarios: No"
+    },
+    {
+      "nombre": "PLATAFORMA",
+      "conclusion": "Forma constructiva:  Monoposte / Biposte\nMaterial de la Estructura: Madera / Hormigón / Hierro   \nCantidad de transformadores:\nTipo de transferencia: Con / Sin tanque de expansión     \nPotencia del transformador: 5  / 10 / 16 / 40 / 63 / 75 / 100 / 150 / 200 / 250 / 315 / 500 / 800 / 1000\nMontaje de transformador: Apoyo sobre rieles / Colgante \nAlimentación MT: LA / LS / LAyLS\nSalidas BT: LA / LS / LAyLS      \n                                  Informe\nConductores a menor distancia de otros servicios: No\nConductores en contacto con otros servicios: No\nConductores a menor distancia la línea de edificación: No\nConductores a menor distancia de carteles, letreros, etc: No\nInterferencia con ramas: No\nInstalaciones con averías: No\nTransformador con pérdida de aceite: No\nSoportes deteriorados: No\nEstructura con averías: No\nCartel ‘Prohibido Subir’ faltante: No\nProtección mecánica a los cables de entrada/salida faltantes: No\nProtección eléctrica del conductor de puesta a tierra faltante: No\nProtección mecánica del conductor de puesta a tierra faltante: No\nNivel de aceite de transformador bajo: No\nObstaculización faltante o inadecuada: No\nVarios: No"
+    },
+    {
+      "nombre": "CÁMARA A NIVEL",
+      "conclusion": "Instalación: Cámara / CT compacto / CT de potencia\nPredio: Vía Pública / Privado en uso / Privado en abandono\nAcceso: Desde vía pública / Desde paso de predio privado\nAfectación de prop. Privada: Ninguna / Lindante / Parcial / Total\n                    Informe  \nSeñaletica faltantate o inadecuada: No\nPuerta faltante: No\nPuerta abierta: No\nCierre de puerta faltante o defectuosa: No\nPuerta rota: No\nVentilación obstruida: No\nCerramientos perimetral faltante o inadecuado: No\nVarios: No"
+    },
+    {
+      "nombre": "CÁMARA SUBTERRÁNEA",
+      "conclusion": "Construcción: Hermética  / Inundable\nPredio: Vía Pública / Privado en uso / Privado en abandono\nAcceso: Desde vía pública / Desde paso de predio privado\nAfectación de prop. Privada: Ninguna / Lindante / Parcial / Total\n                                 Informe\nTapa brusco desnivel: No\nTapa rota: No\nTapa faltante: No\nReja de ventilación de cámara: cierre defectuoso: No\nTapa de ingreso falta de cierre o cierre defectuoso: No\nSeñalética faltante o inadecuada: No\nCerramiento perimetral faltante o inadecuado: No\nCentro de Transformación Subterráneo (Cámara) interior con agua: No\nVarios: No"
+    },
+    {
+      "nombre": "LÍNEA AÉREA",
+      "conclusion": "Nivel de tensión: BT / MT / AT\nTensión nominal (KV): 0.22 / 0.38 /  6.6 / 13.2 / 33 / 66 / 132 / 220 / 500   \nAislación: Desnudos / Protegidos / Protegidos / PVC\nHilos: Bifilar / Trifilar / Tetrafilar / Doble terna trifilar\nDisposición: Convencional / Preensablada / Horizonatal / Vertical / Triangular / Line post / Cross rope\n                         Informe\nA menor distancia de otros servicios: No\nEn contacto con otros servicios: No\nA menor distancia de carteles, letreros, etc: No\nA menor distancia de la línea de edificación: No\nA menor altura respecto al terreno: No\nCables al alcance de la mano: No\nCables poco tensos: No\nCables cortados que cuelgan: No\nInterferencia con ramas: No\nInstalaciones con averías: No\nCruceta/ménsula inclinada: No\nCruceta/ménsula rota: No\nCruceta/ménsula suelta: No\nAisladores en mal estado (rotos, sueltos, etc): No"
+    },
+    {
+      "nombre": "LÍNEA SUBTERRÁNEA",
+      "conclusion": "Nivel de tensión: BT / MT / AT\nTensión nominal (KV): 0.38 / 13.2 / 27.5 / 33 / 66 / 132 / 220 / 500   \nAislación: PVC / XLPE / API\nConstrucción: Unipolar / Tripolar / Tetrapolar\n                                      Informe\nProfundidad de instalación inadecuada: No\nA menor distancia de otros servicios: No\nProtección mecánica faltante o inadecuada: No\nVarios: No"
+    },
+    {
+      "nombre": "ESTRUCTURA SOSTÉN DE MADERA",
+      "conclusion": "Función: Suspensión / Desvío Angular / Retención / Terminal\nRefuerzos: Ninguno / Rienda simple / Rienda doble / Contraposte / Tutor / Poste doble / Poste triple\nEmpotramiento: Suelo / Suelo cemento / Cemento\n                                Informe\nPoste inclinado o curvado: No\nPoste podrido: No\nPoste quebrado o agrietado: No\nPoste caído: No\nRienda floja: No\nRinda suelta o cortada: No\nRienda con aisladores o inadecuada: No\nObstaculización faltante o inadecuada: No\nInstalación inadecuada (en lugar con agua, sin separación del solado, etc): No\nProtección de cables de subida/bajada faltante: No\nProtección de conductor de puesta a tierra de servicio faltante: No"
+    },
+    {
+      "nombre": "ESTRUCTURA SOSTÉN DE HORMIGÓN",
+      "conclusion": "Función: Suspensión / Desvío Angular / Retención / Terminal\nRefuerzos: Ninguno / Rienda simple / Rienda doble / Contraposte / Tutor / Columna doble / Columna triple\nEmpotramiento: Suelo / Suelo cemento / Cemento\n                                Informe\nColumna inclinada o curvada: No\nColumna quebrada o agrietada: No\nColumna/Estructura caída: No\nRienda floja: No\nRinda suelta o cortada: No\nRienda con aisladores o inadecuada: No\nObstaculización faltante o inadecuada: No\nPuesta a tierra faltante: No\nProtección de cables de subida/bajada faltante: No\nProtección de conductor de puesta a tierra de servicio faltante: No\nEstructura con averías: No\nVarios: No"
+    },
+    {
+      "nombre": "ESTRUCTURA SOSTÉN DE HIERRO",
+      "conclusion": "Función: Suspensión / Desvío Angular / Retención / Terminal\nRefuerzos: Ninguno / Contraposte / Tutor / Columna doble / Columna triple / Torre reticulada / Riendas de anclaje\nEmpotramiento: Suelo / Suelo cemento / Cemento\n                              Informe\nColumna inclinada o curvada: No\nColumna deteriorada o corroída: No\nColumna/estructura caída: No\nRienda floja: No\nRienda suelta o cortada: No\nRienda con aisladores faltantes o deteriorados: No\nSeñaletica faltante o inadecuada: No\nObstaculización faltante o inadecuada: No\nProtección de conductor de puesta a tierra de servicio faltante: No\nEstructura con averías: No\nVarios: No"
+    },
+    {
+      "nombre": "TRABAJOS EN LA VIA PÚBLICA",
+      "conclusion": "Obra: Tendido LSBT\n           Tendido LSMT\n           Tendido LSAT\n           Cámara Pozo\n           Cámara Subterránea\n           Plataforma\n           Tendido LABT\n           Tendido LAMT\n           Tendido LAAT\n           Acometida\n           Postación BT\n           Postación MT\n           Postación AT\n           Poda\n           Otro:\nContratista:\nObservaciones:\n                                Informe   \nVallado faltante: No\nVallado parcial: No\nEncitado faltante: No\nVallado cierre con alambre: No\nVallado sin dispositivo de cierre: No\nVallado sin resistencia mecánica: No\nVallado sin estabilidad: No\nCalzada de madera faltante: No\nSeñalización en calzada no visible a 100m: No\nIndicadores rojos en calzada faltantes: No\nCartel ´Zanja Abierta´ faltante: No\nCartel ´Instalaciones Eléctricas´ faltantes: No\nRamal peligroso: No\nVarios: No"
+    },
+    {
+      "nombre": "OTRO",
+      "conclusion": ""
+    }
+  ]
+}

@@ -1,0 +1,201 @@
+{
+  "EDENOR S.A.": {
+    "CABA": {
+      "sucursal": "Región I",
+      "localidades": [
+        "AGRONOMIA", "BELGRANO", "CHACARITA", "COGHLAN", "COLEGIALES",
+        "LA PATERNAL", "NUNEZ", "PALERMO", "RECOLETA", "SAAVEDRA",
+        "VILLA CRESPO", "VILLA DEVOTO", "VILLA ORTUZAR", "VILLA PUEYRREDON", "VILLA URQUIZA"
+      ]
+    },
+    "ESCOBAR": {
+      "sucursal": "Region III",
+      "localidades": [
+        "DELTA PRIMERA SECCION (ES)", "ESCOBAR", "GARIN", "INGENIERO MASCHWITZ",
+        "LOMA VERDE", "MAQUINISTA SAVIO", "MATHEU"
+      ]
+    },
+    "GENERAL LAS HERAS": {
+      "sucursal": "Region II",
+      "localidades": ["GENERAL LAS HERAS"]
+    },
+    "GENERAL RODRIGUEZ": {
+      "sucursal": "Region III",
+      "localidades": ["GENERAL RODRIGUEZ"]
+    },
+    "HURLINGHAM": {
+      "sucursal": "Region II",
+      "localidades": ["HURLINGHAM", "VILLA TESEI", "WILLIAM MORRIS"]
+    },
+    "ITUZAINGO": {
+      "sucursal": "Region II",
+      "localidades": ["ITUZAINGO", "VILLA UDAONDO", "PARQUE LELOIR"]
+    },
+    "JOSE C. PAZ": {
+      "sucursal": "Region III",
+      "localidades": ["JOSE CLEMENTE PAZ"]
+    },
+    "LA MATANZA": {
+      "sucursal": "Region II",
+      "localidades": [
+        "VEINTE DE JUNIO", "ALDO BONZI", "CIUDAD EVITA", "GONZALEZ CATAN",
+        "GREGORIO DE LAFERRERE", "ISIDRO CASANOVA", "LA TABLADA", "LOMAS DEL MIRADOR",
+        "RAFAEL CASTILLO", "RAMOS MEJIA", "SAN JUSTO", "TAPIALES",
+        "VILLA LUZURIAGA", "VILLA MADERO", "VIRREY DEL PINO"
+      ]
+    },
+    "MALVINAS ARGENTINAS": {
+      "sucursal": "Region III",
+      "localidades": [
+        "ADOLFO SOURDEAUX", "EL TRIANGULO", "GRAND BOURG", "LOS POLVORINES",
+        "MALVINAS ARGENTINAS", "PABLO NOGUES", "TIERRAS ALTAS", "TORTUGUITAS", "VILLA DE MAYO"
+      ]
+    },
+    "MARCOS PAZ": {
+      "sucursal": "Region II",
+      "localidades": ["MARCOS PAZ"]
+    },
+    "MERLO": {
+      "sucursal": "Region II",
+      "localidades": ["LIBERTAD", "MARIANO ACOSTA", "MERLO", "PONTEVEDRA", "SAN ANTONIO DE PADUA"]
+    },
+    "MORENO": {
+      "sucursal": "Region III",
+      "localidades": ["CUARTEL V", "FRANCISCO ALVAREZ", "LA REJA", "MORENO", "PASO DEL REY", "TRUJUI"]
+    },
+    "MORON": {
+      "sucursal": "Region II",
+      "localidades": ["CASTELAR", "EL PALOMAR", "HAEDO", "MORON", "VILLA SARMIENTO"]
+    },
+    "PILAR": {
+      "sucursal": "Region III",
+      "localidades": [
+        "DEL VISO", "FATIMA", "LA LONJA", "LUIS LAGOMARSINO", "MANUEL ALBERTI",
+        "MANZANARES", "PILAR", "PTE DERQUI", "VILLA ASTOLFI", "VILLA ROSA", "ZELAYA"
+      ]
+    },
+    "SAN FERNANDO": {
+      "sucursal": "Region III",
+      "localidades": [
+        "DELTA SEGUNDA SECCION (SF)", "DELTA TERCERA SECCION (SF)", "DELTA CUARTA SECCION (SF)",
+        "SAN FERNANDO", "VICTORIA VIRREYES"
+      ]
+    },
+    "SAN ISIDRO": {
+      "sucursal": "Region I",
+      "localidades": ["ACASSUSO", "BECCAR", "BOULOGNE", "MARTINEZ", "SAN ISIDRO", "VILLA ADELINA (SI)"]
+    },
+    "SAN MARTIN": {
+      "sucursal": "Region I",
+      "localidades": [
+        "SAN MARTIN", "BILLINGHURST", "LOMA HERMOSA (SM)", "JOSE LEON SUAREZ",
+        "SAN ANDRES", "VILLA BALLESTER", "VILLA LYNCH", "VILLA MAIPÚ"
+      ]
+    },
+    "SAN MIGUEL": {
+      "sucursal": "Region III",
+      "localidades": ["BELLA VISTA", "CAMPO DE MAYO", "MUNIZ", "SAN MIGUEL"]
+    },
+    "TIGRE": {
+      "sucursal": "Region III",
+      "localidades": [
+        "BENAVIDEZ", "CIUDAD DE TIGRE", "DELTA PRIMERA SECCION (TI)", "DIQUE LUJAN",
+        "DON TORCUATO", "EL TALAR", "GENERAL PACHECO", "NORDELTA",
+        "RICARDO ROJAS", "RINCON DE MILBERG", "TRONCOS DEL TALAR"
+      ]
+    },
+    "TRES DE FEBRERO": {
+      "sucursal": "Region I",
+      "localidades": [
+        "CASEROS", "CIUDADELA", "CIUDAD JARDIN DEL PALOMAR", "JOSE INGENIEROS",
+        "MARTIN CORONADO", "PABLO PODESTA", "SAENZ PEÑA", "SANTOS LUGARES",
+        "VILLA BOSCH", "VILLA RAFFO", "LOMA HERMOSA (TF)"
+      ]
+    },
+    "VICENTE LOPEZ": {
+      "sucursal": "Region I",
+      "localidades": [
+        "CARAPACHAY", "FLORIDA", "FLORIDA (OESTE)", "LA LUCILA", "MUNRO",
+        "OLIVOS", "VICENTE LOPEZ", "VILLA ADELINA (VL)", "VILLA MARTELLI"
+      ]
+    }
+  },
+  "EDESUR S.A.": {
+    "ALMIRANTE BROWN": {
+      "sucursal": "Sucursal Lomas de Zamora",
+      "localidades": [
+        "ADROGUE", "BURZACO", "CLAYPOLE", "GLEW", "LONGCHAMPS",
+        "MARMOL", "MINISTRO RIVADAVIA", "RAFAEL CALZADA", "SAN FRANCISCO SOLANO", "SAN JOSE"
+      ]
+    },
+    "AVELLANEDA": {
+      "sucursal": "Sucursal Avellaneda/Quilmes",
+      "localidades": ["AVELLANEDA", "DOCK SUD", "GERLI A", "PIÑEYRO", "SARANDI", "VILLA DOMINICO", "WILDE", "ZONA DE RESERVA"]
+    },
+    "BERAZATEGUI": {
+      "sucursal": "Sucursal Avellaneda/Quilmes",
+      "localidades": ["BERAZATEGUI", "BERAZATEGUI CENTRO", "EL PATO", "GUTIERREZ", "HUDSON", "PLATANOS", "RANELAGH", "SOURIGUES", "V. ESPAÑA"]
+    },
+    "CABA": {
+      "sucursal": "Sucursal Gral. Paz y Sucursal Río de La Plata",
+      "localidades": [
+        "AGRONOMIA", "ALMAGRO", "FLORES", "FLORESTA", "LA PATERNAL", "LINIERS",
+        "MATADEROS", "MONTE CASTRO", "PARQUE AVELLANEDA", "VELEZ SARFIELD",
+        "VERSALLES", "VILLA CRESPO", "VILLA DEL PARQUE", "VILLA DEVOTO",
+        "VILLA GENERAL MITRE", "VILLA LUGANO", "VILLA LURO", "VILLA REAL", "VILLA STA. RITA",
+        "BALVANERA", "BARRACAS", "BOEDO", "CABALLITO", "CONSTITUCION", "LA BOCA",
+        "MONSERRAT", "NUEVA POMPEYA", "PARQUE CHACABUCO", "PARQUE PATRICIOS",
+        "PUERTO MADERO", "RECOLETA", "RETIRO", "SAN CRISTOBAL", "SAN NICOLAS",
+        "SAN TELMO", "VILLA RIACHUELO", "VILLA SOLDATI"
+      ]
+    },
+    "CAÑUELAS": {
+      "sucursal": "Sucursal Lomas de Zamora",
+      "localidades": [
+        "A. PETION", "BELGRANO", "CAÑUELAS", "CASARES", "LOS CAMPITOS",
+        "LOS POZOS", "MAXIMO PAZ", "PELUFFO", "SANTA ANITA", "SANTA ROSA",
+        "UDAONDO", "URIBELARREA", "V. ADRIANA", "VISSIR", "ZONA RURAL 1",
+        "ZONA RURAL 2", "ZONA RURAL 3", "ZONA RURAL 4", "ZONA RURAL 5",
+        "ZONA RURAL 6", "ZONA RURAL 7", "ZONA RURAL 8", "ZONA RURAL 9", "EL TALADRO"
+      ]
+    },
+    "ESTEBAN ECHEVERRIA": {
+      "sucursal": "Sucursal Lomas de Zamora",
+      "localidades": ["9 DE ABRIL", "AMERICA UNIDA", "CANNING EE", "EL JAGUEL", "ESTADO NACIONAL", "LUIS GUILLON", "MONTE GRANDE", "SAN ROQUE", "ZONA RURAL 1 EE"]
+    },
+    "EZEIZA": {
+      "sucursal": "Sucursal Lomas de Zamora",
+      "localidades": ["BARRIO LA UNION", "CANNING EZ", "CARLOS SPEGAZZINNI", "JOSE MARIA", "EZEIZA", "TRISTAN SUAREZ"]
+    },
+    "FLORENCIO VARELA": {
+      "sucursal": "Sucursal Avellaneda/Quilmes",
+      "localidades": ["BOSQUES", "FLORENCIO VARELA", "ING. ALLAN"]
+    },
+    "LANÚS": {
+      "sucursal": "Sucursal Avellaneda/Quilmes",
+      "localidades": ["GERLI L", "LANUS ESTE", "LANUS OESTE", "MONTE CHINGOLO", "REMEDIOS DE ESCALADA", "VALENTIN ALSINA"]
+    },
+    "LOMAS DE ZAMORA": {
+      "sucursal": "Sucursal Lomas de Zamora",
+      "localidades": ["BANFIELD", "LAVALLOL", "LOMAS DE ZAMORA", "TEMPERLEY", "TURDERA", "ZONA RURAL"]
+    },
+    "PRESIDENTE PERON": {
+      "sucursal": "Sucursal Lomas de Zamora",
+      "localidades": [
+        "25 DE MAYO", "COPENHAGÜE", "EL PARAISO", "EL ROBLE", "GUERNICA CENTRO",
+        "GUERNICA OESTE", "LA HAYA", "LAS LOMAS", "LOS PINOS", "PARQUE AMERICANO",
+        "PARQUE LAS NACIONES", "QUINTAS AGRICOLAS", "SAN MARTIN", "SAN PABLO",
+        "SANTA ELENA", "SANTA MAGDALENA", "VILLA NUMANCIA NORTE", "VILLA NUMANCIA SUR",
+        "VILLA PANAMERICANA", "ZONA RURAL I PP", "ZONA RURAL II PP"
+      ]
+    },
+    "QUILMES": {
+      "sucursal": "Sucursal Avellaneda/Quilmes",
+      "localidades": ["BERNAL", "DON BOSCO", "EZPELETA", "QUILMES ESTE", "QUILMES OESTE", "SAN FRANCISCO SOLANO"]
+    },
+    "SAN VICENTE": {
+      "sucursal": "Sucursal Lomas de Zamora",
+      "localidades": ["ALEJANDRO KORN", "DOMSELAAR", "SAN VICENTE"]
+    }
+  }
+}

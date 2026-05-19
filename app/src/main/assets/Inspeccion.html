@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de Inspección - ENRE</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <style>
+    body { background-color: #f9f9f9; }
+    h1 { color: #2c3e50; font-size: 26px; margin-bottom: 8px; }
+    fieldset { background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 16px; margin-bottom: 20px; }
+    legend h3 { font-size: 17px; color: #2c3e50; margin: 0; }
+    .item-form { margin-bottom: 12px; }
+    .hidden { display: none !important; }
+    .invalid-feedback:not(.hidden) { display: block; color: #dc3545; font-size: 13px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+<div class="container" style="padding-top:20px; padding-bottom:40px">
+  <h1>INSPECCIÓN DAIT</h1>
+
+
+  <form id="formInspeccion" enctype="multipart/form-data">
+
+    <!-- ── DATOS GENERALES ── -->
+    <fieldset>
+      <legend><h3>Formulario de Carga</h3></legend>
+
+      <div class="row mb-2">
+        <div class="col-md-4 item-form">
+          <label class="form-label" for="estado">Estado</label>
+          <input type="text" name="estado" class="form-control" id="estado" placeholder="NUEVA" disabled>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-5 item-form">
+          <label class="form-label">Ubicación GPS</label>
+          <div class="input-group">
+            <input type="text" id="coordenadas" name="coordenadas" class="form-control" readonly placeholder="Obteniendo ubicación...">
+            <button type="button" class="btn btn-outline-secondary" onclick="obtenerUbicacion()" title="Actualizar ubicación">🔄</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-5 item-form">
+          <label class="form-label">Reclamo Relacionado</label>
+          <div class="input-group">
+            <input type="number" id="recrel" name="recrel" class="form-control" oninput="autoConclusion()" placeholder="Reclamo relacionado">
+            <button type="button" class="btn btn-outline-secondary" onclick="BuscarRec()"  title="Reclamo relacionado">🔍</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-4 item-form">
+          <label class="form-label" for="fechaCarga">Fecha</label>
+          <input type="date" name="fechaCarga" class="form-control" id="fechaCarga">
+          <p class="invalid-feedback hidden">Ingresá una fecha</p>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- ── UBICACIÓN DE VERIFICACIÓN ── -->
+    <fieldset>
+      <legend><h3>Ubicación de verificación</h3></legend>
+
+      <div class="row mb-2">
+        <div class="col-md-6 item-form">
+          <label class="form-label" for="empresa">Empresa</label>
+          <select id="empresa" name="empresa" class="form-select" onchange="onEmpresaChange()">
+            <option value="">-- Seleccioná una empresa --</option>
+            <option value="EDENOR S.A.">EDENOR S.A.</option>
+            <option value="EDESUR S.A.">EDESUR S.A.</option>
+          </select>
+          <p class="invalid-feedback hidden">Seleccioná una empresa</p>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-6 item-form">
+          <label class="form-label" for="Partido">Partido</label>
+          <select id="Partido" name="Partido" class="form-select" onchange="onPartidoChange()" disabled>
+            <option value="">-- Primero seleccioná una empresa --</option>
+          </select>
+          <p class="invalid-feedback hidden">Seleccioná un partido</p>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-6 item-form">
+          <label class="form-label" for="Localidad">Localidad</label>
+          <select id="Localidad" name="Localidad" class="form-select" disabled onchange="onLocalidadChange()">
+            <option value="">-- Primero seleccioná un partido --</option>
+          </select>
+          <p class="invalid-feedback hidden">Seleccioná una localidad</p>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-6 item-form">
+          <label class="form-label" for="sucursal">Sucursal</label>
+          <input type="text" id="sucursal" name="sucursal" class="form-control" disabled placeholder="Se completa automáticamente">
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-6 item-form">
+          <label class="form-label" for="zona">Tipo de zona</label>
+          <select id="zona" name="zona" class="form-select">
+            <option value="Urbana">Urbana</option>
+            <option value="Semiurbana">Semiurbana</option>
+            <option value="Rural">Rural</option>
+            <option value="Carenciada">Carenciada</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-4 item-form">
+          <label class="form-label" for="calle">Calle</label>
+          <input type="text" name="calle" class="form-control" id="calle">
+          <p class="invalid-feedback hidden">Ingresá una calle</p>
+        </div>
+        <div class="col-md-2 item-form">
+          <label class="form-label" for="num_calle">Número</label>
+          <input type="number" class="form-control" id="num_calle">
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-8 item-form">
+          <label class="form-label" for="entreCalle">Entre calles</label>
+          <input type="text" name="entreCalle" class="form-control" id="entreCalle">
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- ── DATOS DE CONTACTO ── -->
+    <fieldset>
+      <legend><h3>Relevamiento</h3></legend>
+
+      <div class="row mb-2">
+        <div class="col-md-6 item-form">
+          <label class="form-label" for="inspector">Inspector</label>
+          <select id="inspector" name="inspector" class="form-select">
+          </select>
+          <p class="invalid-feedback hidden">Seleccioná un inspector</p>
+        </div>
+      </div>
+
+
+      <div class="row mb-2">
+        <div class="col-md-6 item-form">
+          <label class="form-label" for="descripcion">Descripción</label>
+          <select id="descripcion" name="descripcion" class="form-select">
+            <option value="Campaña de Relevamiento">Campaña de Relevamiento</option>
+            <option value="Seguridad en la Vía Pública">Seguridad en la Vía Pública</option>
+            <option value="Trabajos en la vía pública">Trabajos en la vía pública</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-6 item-form">
+          <label class="form-label" for="presencia">Requiere presencia Dist.</label>
+          <select id="presencia" name="presencia" class="form-select">
+            <option value="NO" aria-selected="true" selected>NO</option>
+            <option value="SI">SI</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-4 item-form">
+          <label class="form-label" for="normativa">Normativa</label>
+          <input type="text" name="normativa" class="form-control" id="normativa" value="Resolución 77/2025">
+        </div>
+      </div>
+
+
+      <div class="row mb-2">
+        <div class="col-md-6 item-form">
+          <label class="form-label" for="cumple">Cumple</label>
+          <select id="cumple" name="cumple" class="form-select" onchange="autoConclusion()">
+            <option value="" aria-selected="true">Cumple</option>>
+            <option value="NO">NO</option>
+            <option value="SI">SI</option>
+          </select>
+          <p class="invalid-feedback hidden">Indiqué cumplimiento</p>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-5 item-form">
+          <label class="form-label" for="conclusion">Conclusión</label>
+          <textarea id="conclusion" name="conclusion" class="form-control" placeholder="Conclusión del caso..." rows="3"></textarea>
+          <p class="invalid-feedback hidden">Ingresá una conclusión</p>
+        </div>
+      </div>
+
+
+
+    </fieldset>
+
+    <!-- ── Instalación ── -->
+    <fieldset>
+      <legend><h3>Instalación</h3></legend>
+
+      <div class="row mb-2">
+        <div class="col-md-6 item-form">
+          <label class="form-label" for="instalacion">Tipo de instalacion</label>
+          <select id="instalacion" name="instalacion" class="form-select" onchange="autoInformacion()">
+          </select>
+          <p class="invalid-feedback hidden">Seleccioná una instalación</p>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-5 item-form">
+          <label class="form-label" for="informacionDisp">Informacion Disponible</label>
+          <textarea id="informacionDisp" name="informacionDisp" class="form-control" placeholder="Informacion Disponible..." rows="5"></textarea>
+          <p class="invalid-feedback hidden">Detalle información de la instalación</p>
+        </div>
+      </div>
+
+      <!-- FOTOS -->
+      <div class="row mb-2">
+        <div class="col-md-6 item-form">
+          <label class="form-label">Adjuntar fotos</label>
+          <div class="mb-2">
+            <label class="form-label fw-normal" for="foto1">Foto 1</label>
+            <input type="file" id="foto1" name="foto1" class="form-control" accept="image/*" onchange="previewFoto(this,'prev1')">
+            <img id="prev1" class="hidden mt-2" style="width:80px;height:80px;object-fit:cover;border-radius:4px;border:1px solid #ccc">
+          </div>
+          <div class="mb-2">
+            <label class="form-label fw-normal" for="foto2">Foto 2</label>
+            <input type="file" id="foto2" name="foto2" class="form-control" accept="image/*" onchange="previewFoto(this,'prev2')">
+            <img id="prev2" class="hidden mt-2" style="width:80px;height:80px;object-fit:cover;border-radius:4px;border:1px solid #ccc">
+          </div>
+          <div class="mb-2">
+            <label class="form-label fw-normal" for="foto3">Foto 3</label>
+            <input type="file" id="foto3" name="foto3" class="form-control" accept="image/*" onchange="previewFoto(this,'prev3')">
+            <img id="prev3" class="hidden mt-2" style="width:80px;height:80px;object-fit:cover;border-radius:4px;border:1px solid #ccc">
+          </div>
+          <p id="validarFotos" class="invalid-feedback hidden">Las fotos no deben superar 5 MB cada una</p>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- ── BOTON GUARDAR Y ENVÍO ── -->
+
+    <div class="row mb-4">
+      <div class="col-md-6 item-form">
+        <button id="botonG" type="button"  class="btn btn-primary" onclick="GuardarFormu()">Guardar Formulario</button>
+        <button id="botonE" type="button"  class="btn btn-primary" onclick="ValidarFormu()">Enviar Formulario</button>
+      </div>
+    </div>
+
+
+    <div class="row mb-4">
+      <div class="col-md-6 item-form">
+
+      </div>
+    </div>
+
+
+
+  </form>
+</div>
+
+<script src="js/bootstrap.bundle.min.js"></script>
+<script>
+
+  // ── DATOS ─────────────────────────────────────────────────────────────────────
+  // Con WebViewAssetLoader fetch() funciona correctamente desde assets/
+  var zonas = {};
+  var inspectores = {};
+  var instalacion = {};
+
+  fetch('data/zonas.json')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      zonas = data;
+      console.log('zonas.json cargado OK');
+    })
+    .catch(function(e) {
+      console.error('Error cargando zonas.json:', e);
+    });
+
+  fetch('data/inspectores.json')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+       inspectores = data.inspectores;
+       console.log('inspectores.json cargado OK');
+       console.log(inspectores);
+       poblarSelectInspectores();
+    })
+    .catch(function(e) {
+      console.error('Error cargando inspectores.json:', e);
+    });
+
+  fetch('data/instalacion.json')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+         instalacion = data.instalacion;
+         console.log('instalacion.json cargado OK');
+         console.log(instalacion);
+         poblarSelectInstalacion();
+      })
+      .catch(function(e) {
+        console.error('Error cargando instalacion.json:', e);
+      });
+
+
+
+  // Mapa especial para EDESUR CABA (dos sucursales según localidad)
+  var sucursalCABAMap = {
+    "AGRONOMIA": "Sucursal Gral. Paz",
+    "ALMAGRO": "Sucursal Gral. Paz",
+    "FLORES": "Sucursal Gral. Paz",
+    "FLORESTA": "Sucursal Gral. Paz",
+    "LA PATERNAL": "Sucursal Gral. Paz",
+    "LINIERS": "Sucursal Gral. Paz",
+    "MATADEROS": "Sucursal Gral. Paz",
+    "MONTE CASTRO": "Sucursal Gral. Paz",
+    "PARQUE AVELLANEDA": "Sucursal Gral. Paz",
+    "VELEZ SARFIELD": "Sucursal Gral. Paz",
+    "VERSALLES": "Sucursal Gral. Paz",
+    "VILLA CRESPO": "Sucursal Gral. Paz",
+    "VILLA DEL PARQUE": "Sucursal Gral. Paz",
+    "VILLA DEVOTO": "Sucursal Gral. Paz",
+    "VILLA GENERAL MITRE": "Sucursal Gral. Paz",
+    "VILLA LUGANO": "Sucursal Gral. Paz",
+    "VILLA LURO": "Sucursal Gral. Paz",
+    "VILLA REAL": "Sucursal Gral. Paz",
+    "VILLA STA. RITA": "Sucursal Gral. Paz",
+    "BALVANERA": "Sucursal Río de La Plata",
+    "BARRACAS": "Sucursal Río de La Plata",
+    "BOEDO": "Sucursal Río de La Plata",
+    "CABALLITO": "Sucursal Río de La Plata",
+    "CONSTITUCION": "Sucursal Río de La Plata",
+    "LA BOCA": "Sucursal Río de La Plata",
+    "MONSERRAT": "Sucursal Río de La Plata",
+    "NUEVA POMPEYA": "Sucursal Río de La Plata",
+    "PARQUE CHACABUCO": "Sucursal Río de La Plata",
+    "PARQUE PATRICIOS": "Sucursal Río de La Plata",
+    "PUERTO MADERO": "Sucursal Río de La Plata",
+    "RECOLETA": "Sucursal Río de La Plata",
+    "RETIRO": "Sucursal Río de La Plata",
+    "SAN CRISTOBAL": "Sucursal Río de La Plata",
+    "SAN NICOLAS": "Sucursal Río de La Plata",
+    "SAN TELMO": "Sucursal Río de La Plata",
+    "VILLA RIACHUELO": "Sucursal Río de La Plata",
+    "VILLA SOLDATI": "Sucursal Río de La Plata"
+  };
+
+  // ── SELECTS ANIDADOS ──────────────────────────────────────────────────────────
+
+  function removeOptions(sel) {
+    while (sel.options.length > 0) sel.remove(0);
+  }
+
+  function onEmpresaChange() {
+    var empresa      = document.getElementById("empresa").value;
+    var selPartido   = document.getElementById("Partido");
+    var selLocalidad = document.getElementById("Localidad");
+
+    removeOptions(selPartido);
+    selPartido.add(new Option("-- Seleccioná un partido --", ""));
+    selPartido.disabled = true;
+
+    removeOptions(selLocalidad);
+    selLocalidad.add(new Option("-- Primero seleccioná un partido --", ""));
+    selLocalidad.disabled = true;
+
+    document.getElementById("sucursal").value = "";
+
+    if (!empresa || !zonas[empresa]) return;
+
+    Object.keys(zonas[empresa]).sort().forEach(function(partido) {
+      selPartido.add(new Option(partido, partido));
+    });
+    selPartido.disabled = false;
+  }
+
+  function onPartidoChange() {
+    var empresa      = document.getElementById("empresa").value;
+    var partido      = document.getElementById("Partido").value;
+    var selLocalidad = document.getElementById("Localidad");
+
+    removeOptions(selLocalidad);
+    selLocalidad.add(new Option("-- Seleccioná una localidad --", ""));
+    selLocalidad.disabled = true;
+    document.getElementById("sucursal").value = "";
+
+    if (!partido || !zonas[empresa] || !zonas[empresa][partido]) return;
+
+    var datos = zonas[empresa][partido];
+
+    datos.localidades.slice().sort().forEach(function(loc) {
+      selLocalidad.add(new Option(loc, loc));
+    });
+    selLocalidad.disabled = false;
+
+    // EDESUR CABA: sucursal se define al elegir localidad
+    if (empresa === "EDESUR S.A." && partido === "CABA") {
+      document.getElementById("sucursal").value = "";
+    } else {
+      document.getElementById("sucursal").value = datos.sucursal;
+    }
+  }
+
+  function onLocalidadChange() {
+    var empresa   = document.getElementById("empresa").value;
+    var partido   = document.getElementById("Partido").value;
+    var localidad = document.getElementById("Localidad").value;
+
+    if (empresa === "EDESUR S.A." && partido === "CABA") {
+      document.getElementById("sucursal").value = sucursalCABAMap[localidad] || "";
+    }
+    // Para el resto la sucursal ya está seteada por onPartidoChange
+  }
+
+
+  // ── AUTOCOMPLETADOS ────────────────────────────────────────────────────────────────
+
+  function autoConclusion() {
+    var recrel = document.getElementById("recrel").value.trim();
+    var cumple = document.getElementById("cumple").value;
+    var conclusion = "";
+
+    if (recrel !== "") {
+      if (cumple === "NO") {
+        conclusion = "La anomalía detectada en la campaña 2024/2025 bajo el reclamo Nro " + recrel + " NO fue corregida por la distribuidora";
+      } else {
+        conclusion = "La anomalía detectada en la campaña 2024/2025 bajo el reclamo Nro " + recrel + " fue corregida por la distribuidora";
+      }
+    } else {
+      if (cumple === "NO") {
+        conclusion = "La Distribuidora NO cumple con la Normativa citada.";
+      } else {
+        conclusion = "La Distribuidora cumple con la Normativa citada.";
+      }
+    }
+
+    document.getElementById("conclusion").value = conclusion;
+  }
+
+
+
+function autoInformacion() {
+  const select = document.getElementById('instalacion');
+  const valor = select ? select.value : '';
+  const item = instalacion.find(i => i.nombre === valor);
+  const campo = document.getElementById('informacionDisp');
+  if (campo) {
+    campo.value = item ? item.conclusion : '';
+    // Ajustar altura automáticamente
+    ajustarAlturaTextarea(campo);
+  }
+}
+
+
+
+
+
+  // ── UTILIDADES ────────────────────────────────────────────────────────────────
+
+  function volver() { history.back(); }
+
+  function isEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : '';
+  }
+
+  function tamanioArchivos(id) {
+    var input = document.getElementById(id);
+    return (input && input.files.length > 0) ? input.files[0].size : 0;
+  }
+
+  function tipoArchivo(id) {
+    var input = document.getElementById(id);
+    return (input && input.files.length > 0) ? input.files[0].name.split('.').pop().toLowerCase() : '';
+  }
+
+  function previewFoto(input, previewId) {
+    var img = document.getElementById(previewId);
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function(e) { img.src = e.target.result; img.classList.remove('hidden'); };
+      reader.readAsDataURL(input.files[0]);
+    } else {
+      img.classList.add('hidden');
+    }
+  }
+
+function poblarSelectInspectores() {
+  const select = document.getElementById('inspector');
+
+  select.innerHTML = '<option value="" disabled selected>-- Seleccioná un inspector --</option>';
+
+  for (const nombre of inspectores) {
+    select.appendChild(new Option(nombre, nombre));
+  }
+}
+
+function poblarSelectInstalacion() {
+  const select = document.getElementById('instalacion');
+  if (!select) {
+    console.error('No se encontró el <select id="instalacion">');
+    return;
+  }
+  select.innerHTML = '<option value="" disabled selected>-- Seleccioná una instalación --</option>';
+  instalacion.forEach(item => {
+    const option = document.createElement('option');
+    option.value = item.nombre;
+    option.textContent = item.nombre;
+    select.appendChild(option);
+  });
+}
+
+function ajustarAlturaTextarea(elemento) {
+  if (!elemento) return;
+  // Resetear altura para que el scrollHeight sea correcto
+  elemento.style.height = 'auto';
+  // Asignar la nueva altura (scrollHeight + un pequeño padding)
+  elemento.style.height = (elemento.scrollHeight) + 'px';
+}
+
+  // ── VALIDACIÓN ────────────────────────────────────────────────────────────────
+
+  function setError(id) {
+    var el = document.getElementById(id);
+    el.classList.add('is-invalid');
+    var fb = el.nextElementSibling;
+    if (fb && fb.classList.contains('invalid-feedback')) fb.classList.remove('hidden');
+  }
+
+  function clearError(id) {
+    var el = document.getElementById(id);
+    el.classList.remove('is-invalid');
+    var fb = el.nextElementSibling;
+    if (fb && fb.classList.contains('invalid-feedback')) fb.classList.add('hidden');
+  }
+
+  function setErrorGroup(id) {
+    var el = document.getElementById(id);
+    el.classList.add('is-invalid');
+    var fb = el.closest('.item-form') ? el.closest('.item-form').querySelector('.invalid-feedback') : null;
+    if (fb) fb.classList.remove('hidden');
+  }
+
+  function clearErrorGroup(id) {
+    var el = document.getElementById(id);
+    el.classList.remove('is-invalid');
+    var fb = el.closest('.item-form') ? el.closest('.item-form').querySelector('.invalid-feedback') : null;
+    if (fb) fb.classList.add('hidden');
+  }
+
+  function mostrarErrores() {
+    var errores = 0;
+
+    if (!document.getElementById("fechaCarga").value) { setError("fechaCarga"); errores++; } else { clearError("fechaCarga"); }
+    if (!document.getElementById("empresa").value)   { setError("empresa");    errores++; } else { clearError("empresa"); }
+    if (!document.getElementById("Partido").value)   { setError("Partido");    errores++; } else { clearError("Partido"); }
+    if (!document.getElementById("Localidad").value) { setError("Localidad");  errores++; } else { clearError("Localidad"); }
+    if (!document.getElementById("zona").value) { setError("zona");  errores++; } else { clearError("zona"); }
+    if (!document.getElementById("calle").value)     { setError("calle");      errores++; } else { clearError("calle"); }
+    if (!document.getElementById("num_calle").value)     { setError("num_calle");      errores++; } else { clearError("num_calle"); }
+    if (!document.getElementById("inspector").value) { setError("inspector"); errores++; } else { clearError("inspector"); }
+    if (!document.getElementById("descripcion").value) { setError("descripcion"); errores++; } else { clearError("descripcion"); }
+    if (!document.getElementById("presencia").value) { setError("presencia"); errores++; } else { clearError("presencia"); }
+    if (!document.getElementById("cumple").value) { setError("cumple"); errores++; } else { clearError("cumple"); }
+    if (!document.getElementById("instalacion").value) { setError("instalacion"); errores++; } else { clearError("instalacion"); }
+    if (!document.getElementById("informacionDisp").value) { setError("informacionDisp"); errores++; } else { clearError("informacionDisp"); }
+
+
+    var sizeLimitArchivo = 31457280;
+    var total = tamanioArchivos("foto1") + tamanioArchivos("foto2") + tamanioArchivos("foto3");
+
+    var validarFotos = document.getElementById("validarFotos");
+    if (total > sizeLimitArchivo) {
+      validarFotos.textContent = "El tamaño total de las fotos supera los 30 MB";
+      validarFotos.classList.remove("hidden"); errores++;
+    } else {
+      validarFotos.classList.add("hidden");
+    }
+
+
+
+    return errores;
+  }
+
+  function ValidarFormu() {
+    var boton = document.getElementById("botonE");
+    boton.disabled = true;
+    if (mostrarErrores() !== 0) { boton.disabled = false; return false; }
+
+    var resultado = Android.enviar(recolectarDatos());
+    var res = JSON.parse(resultado);
+    if (res.ok) {
+      alert("Formulario enviado correctamente");
+    } else {
+      alert("Error al enviar: " + res.error);
+      boton.disabled = false;
+    }
+  }
+
+  function GuardarFormu() {
+  var resultado = Android.guardar(recolectarDatos());
+  var res = JSON.parse(resultado);
+  if (res.ok) {
+    alert("Formulario guardado correctamente (ID: " + res.id + ")");
+  } else {
+    alert("Error al guardar: " + res.error);
+    }
+  }
+
+
+  // ── GEOLOCALIZACIÓN ───────────────────────────────────────────────────────────
+
+  function obtenerUbicacion() {
+    document.getElementById("coordenadas").placeholder = "Obteniendo ubicación...";
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                document.getElementById("coordenadas").value = position.coords.latitude.toFixed(6) + ", " + position.coords.longitude.toFixed(6);
+            },
+            function(error) {
+                console.error("Error de geolocalización:", error);
+                let mensaje = "No se pudo obtener ubicación";
+                switch(error.code) {
+                    case error.PERMISSION_DENIED: mensaje = "Permiso denegado"; break;
+                    case error.POSITION_UNAVAILABLE: mensaje = "Posición no disponible"; break;
+                    case error.TIMEOUT: mensaje = "Tiempo de espera agotado"; break;
+                }
+                document.getElementById("coordenadas").placeholder = mensaje;
+                document.getElementById("coordenadas").value = "";
+            }
+        );
+    } else {
+        document.getElementById("coordenadas").placeholder = "GPS no soportado";
+    }
+}
+
+  // ── ON LOAD ───────────────────────────────────────────────────────────────────
+
+  window.onload = function() {
+    obtenerUbicacion();
+    autoConclusion();
+    document.getElementById("fechaCarga").valueAsDate = new Date();
+  }
+
+   // ── GUARDAR EN ANDROID ────────────────────────────────────────────────────────
+
+
+  function recolectarDatos() {
+    return JSON.stringify({
+      coordenadas:    document.getElementById("coordenadas").value,
+      recrel:         document.getElementById("recrel").value,
+      fechaCarga:     document.getElementById("fechaCarga").value,
+      empresa:        document.getElementById("empresa").value,
+      Partido:        document.getElementById("Partido").value,
+      Localidad:      document.getElementById("Localidad").value,
+      sucursal:       document.getElementById("sucursal").value,
+      zona:           document.getElementById("zona").value,
+      calle:          document.getElementById("calle").value,
+      num_calle:      document.getElementById("num_calle").value,
+      entreCalle:     document.getElementById("entreCalle").value,
+      inspector:      document.getElementById("inspector").value,
+      descripcion:    document.getElementById("descripcion").value,
+      presencia:      document.getElementById("presencia").value,
+      normativa:      document.getElementById("normativa").value,
+      cumple:         document.getElementById("cumple").value,
+      conclusion:     document.getElementById("conclusion").value,
+      instalacion:    document.getElementById("instalacion").value,
+      informacionDisp:document.getElementById("informacionDisp").value,
+      foto1:          document.getElementById("foto1").files[0]?.name || "",
+      foto2:          document.getElementById("foto2").files[0]?.name || "",
+      foto3:          document.getElementById("foto3").files[0]?.name || ""
+    });
+  }
+
+
+
+  function cargarDatosFormulario(datos) {
+    // Asignar valores a los campos del formulario
+    document.getElementById('empresa').value = datos.empresa;
+    document.getElementById('Partido').value = datos.partido;
+    document.getElementById('Localidad').value = datos.localidad;
+    document.getElementById('calle').value = datos.calle;
+    document.getElementById('num_calle').value = datos.num_calle;
+    document.getElementById('entreCalle').value = datos.entreCalle;
+    document.getElementById('inspector').value = datos.inspector;
+    document.getElementById('instalacion').value = datos.instalacion;
+    document.getElementById('conclusion').value = datos.conclusion;
+    document.getElementById('recrel').value = datos.recrel;
+    document.getElementById('zona').value = datos.zona;
+    document.getElementById('descripcion').value = datos.descripcion;
+    document.getElementById('presencia').value = datos.presencia;
+    document.getElementById('normativa').value = datos.normativa;
+    document.getElementById('cumple').value = datos.cumple;
+    document.getElementById('fechaCarga').value = datos.fechaCarga;
+    document.getElementById('coordenadas').value = datos.coordenadas;
+
+    // Forzar eventos para cargar selects anidados (partido, localidad, etc.)
+    if (typeof onEmpresaChange === 'function') onEmpresaChange();
+    setTimeout(() => {
+        if (typeof onPartidoChange === 'function') onPartidoChange();
+        setTimeout(() => {
+            if (typeof onLocalidadChange === 'function') onLocalidadChange();
+            // También autoInformacion para la instalación
+            if (typeof autoInformacion === 'function') autoInformacion();
+            if (typeof autoConclusion === 'function') autoConclusion();
+        }, 100);
+    }, 100);
+}
+
+
+
+
+  ;
+
+</script>
+</body>
+</html>
