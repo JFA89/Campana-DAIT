@@ -685,35 +685,85 @@ function ajustarAlturaTextarea(elemento) {
 
 
   function cargarDatosFormulario(datos) {
-    // Asignar valores a los campos del formulario
-    document.getElementById('empresa').value = datos.empresa;
-    document.getElementById('Partido').value = datos.partido;
-    document.getElementById('Localidad').value = datos.localidad;
-    document.getElementById('calle').value = datos.calle;
-    document.getElementById('num_calle').value = datos.num_calle;
-    document.getElementById('entreCalle').value = datos.entreCalle;
-    document.getElementById('inspector').value = datos.inspector;
-    document.getElementById('instalacion').value = datos.instalacion;
-    document.getElementById('conclusion').value = datos.conclusion;
-    document.getElementById('recrel').value = datos.recrel;
-    document.getElementById('zona').value = datos.zona;
-    document.getElementById('descripcion').value = datos.descripcion;
-    document.getElementById('presencia').value = datos.presencia;
-    document.getElementById('normativa').value = datos.normativa;
-    document.getElementById('cumple').value = datos.cumple;
-    document.getElementById('fechaCarga').value = datos.fechaCarga;
-    document.getElementById('coordenadas').value = datos.coordenadas;
+    console.log('Cargando datos:', datos);
 
-    // Forzar eventos para cargar selects anidados (partido, localidad, etc.)
-    if (typeof onEmpresaChange === 'function') onEmpresaChange();
-    setTimeout(() => {
-        if (typeof onPartidoChange === 'function') onPartidoChange();
-        setTimeout(() => {
-            if (typeof onLocalidadChange === 'function') onLocalidadChange();
-            // También autoInformacion para la instalación
-            if (typeof autoInformacion === 'function') autoInformacion();
-            if (typeof autoConclusion === 'function') autoConclusion();
-        }, 100);
+    // Asignar valores directos
+    document.getElementById('coordenadas').value = datos.coordenadas || '';
+    document.getElementById('recrel').value = datos.recrel || '';
+    document.getElementById('fechaCarga').value = datos.fechaCarga || '';
+    document.getElementById('zona').value = datos.zona || 'Urbana';
+    document.getElementById('calle').value = datos.calle || '';
+    document.getElementById('num_calle').value = datos.num_calle || '';
+    document.getElementById('entreCalle').value = datos.entreCalle || '';
+    document.getElementById('descripcion').value = datos.descripcion || 'Campaña de Relevamiento';
+    document.getElementById('presencia').value = datos.presencia || 'NO';
+    document.getElementById('normativa').value = datos.normativa || 'Resolución 77/2025';
+    document.getElementById('cumple').value = datos.cumple || 'NO';
+    document.getElementById('conclusion').value = datos.conclusion || '';
+    document.getElementById('informacionDisp').value = datos.informacionDisp || '';
+    document.getElementById('estado').value = 'GUARDADO';
+
+    // Selects que necesitan carga previa de opciones
+    document.getElementById('empresa').value = datos.empresa || '';
+
+    // Esperar a que zonas esté cargado y popular los selects anidados
+    var intentos = 0;
+    var intervaloCarga = setInterval(function() {
+        intentos++;
+        if (Object.keys(zonas).length > 0 || intentos > 20) {
+            clearInterval(intervaloCarga);
+
+            // Cargar empresa → partido
+            if (datos.empresa) {
+                document.getElementById('empresa').value = datos.empresa;
+                onEmpresaChange();
+
+                setTimeout(function() {
+                    // Cargar partido → localidad
+                    if (datos.Partido) {
+                        document.getElementById('Partido').value = datos.Partido;
+                        onPartidoChange();
+
+                        setTimeout(function() {
+                            // Cargar localidad → sucursal
+                            if (datos.Localidad) {
+                                document.getElementById('Localidad').value = datos.Localidad;
+                                onLocalidadChange();
+                            }
+                            // Cargar sucursal (por si no se autocompletó)
+                            if (datos.sucursal) {
+                                document.getElementById('sucursal').value = datos.sucursal;
+                            }
+                        }, 150);
+                    }
+                }, 150);
+            }
+
+            // Esperar a que inspectores esté cargado
+            var intentosInsp = 0;
+            var intervaloInsp = setInterval(function() {
+                intentosInsp++;
+                if (inspectores.length > 0 || intentosInsp > 20) {
+                    clearInterval(intervaloInsp);
+                    if (datos.inspector) {
+                        document.getElementById('inspector').value = datos.inspector;
+                    }
+                }
+            }, 100);
+
+            // Esperar a que instalacion esté cargada
+            var intentosInst = 0;
+            var intervaloInst = setInterval(function() {
+                intentosInst++;
+                if (instalacion.length > 0 || intentosInst > 20) {
+                    clearInterval(intervaloInst);
+                    if (datos.instalacion) {
+                        document.getElementById('instalacion').value = datos.instalacion;
+                        // No llamar autoInformacion para no sobreescribir informacionDisp
+                    }
+                }
+            }, 100);
+        }
     }, 100);
 }
 

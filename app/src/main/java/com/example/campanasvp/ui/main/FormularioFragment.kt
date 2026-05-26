@@ -27,7 +27,7 @@ import java.io.FileOutputStream
 
 class FormularioFragment : Fragment() {
 
-    private lateinit var webView: WebView
+    public lateinit var webView: WebView
     private var filePathCallback: ValueCallback<Array<Uri>>? = null
     private var cameraImageUri: Uri? = null
 

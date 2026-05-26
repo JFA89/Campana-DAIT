@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.campanasvp.DBHelper
 import com.example.campanasvp.InspeccionAdapter
+import com.example.campanasvp.MainMenu
 import com.example.campanasvp.R
 
 class GuardadoFragment : Fragment() {
@@ -37,7 +37,8 @@ class GuardadoFragment : Fragment() {
     private fun cargarLista() {
         val inspecciones = dbHelper.obtenerPorEstado("GUARDADO")
         adapter = InspeccionAdapter(inspecciones) { inspeccion ->
-            Toast.makeText(requireContext(), "Guardado ID: ${inspeccion.id}", Toast.LENGTH_SHORT).show()
+            // Al tocar un item, llamar a MainMenu para abrir el formulario con los datos
+            (activity as? MainMenu)?.abrirFormularioConDatos(inspeccion)
         }
         recyclerView.adapter = adapter
     }
