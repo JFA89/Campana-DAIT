@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.campanasvp.DBHelper
 import com.example.campanasvp.InspeccionAdapter
+import com.example.campanasvp.MainMenu
 import com.example.campanasvp.R
 
 class EnviadosFragment : Fragment() {
@@ -37,9 +38,8 @@ class EnviadosFragment : Fragment() {
     private fun cargarLista() {
         val inspecciones = dbHelper.obtenerPorEstado("ENVIADO")
         adapter = InspeccionAdapter(inspecciones) { inspeccion ->
-            Toast.makeText(requireContext(), "Enviado ID: ${inspeccion.id}", Toast.LENGTH_SHORT).show()
-            // Opcional: si querés que al tocar también vaya al formulario para ver, podés copiar la misma lógica que en GuardadoFragment
-            // (activity as? MainMenu)?.abrirFormularioConDatos(inspeccion)
+            // Al tocar un item, llamar a MainMenu para abrir el formulario con los datos
+            (activity as? MainMenu)?.abrirFormularioConDatos(inspeccion)
         }
         recyclerView.adapter = adapter
     }

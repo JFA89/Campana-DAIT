@@ -48,6 +48,7 @@ class MainMenu : AppCompatActivity() {
                     {
                         "id": ${inspeccion.id},
                         "coordenadas": "${escaparJson(inspeccion.coordenadas)}",
+                        "estado": "${escaparJson(inspeccion.estado)}",
                         "recrel": "${escaparJson(inspeccion.recrel)}",
                         "fechaCarga": "${escaparJson(inspeccion.fechaCarga)}",
                         "empresa": "${escaparJson(inspeccion.empresa)}",

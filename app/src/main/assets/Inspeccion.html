@@ -701,7 +701,7 @@ function ajustarAlturaTextarea(elemento) {
     document.getElementById('cumple').value = datos.cumple || 'NO';
     document.getElementById('conclusion').value = datos.conclusion || '';
     document.getElementById('informacionDisp').value = datos.informacionDisp || '';
-    document.getElementById('estado').value = 'GUARDADO';
+    document.getElementById('estado').value = datos.estado || '';
 
     // Selects que necesitan carga previa de opciones
     document.getElementById('empresa').value = datos.empresa || '';

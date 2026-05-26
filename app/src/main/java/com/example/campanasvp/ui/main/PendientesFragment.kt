@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.campanasvp.DBHelper
 import com.example.campanasvp.Inspeccion
 import com.example.campanasvp.InspeccionAdapter
+import com.example.campanasvp.MainMenu
 import com.example.campanasvp.R
 
 class PendientesFragment : Fragment() {
@@ -38,7 +39,8 @@ class PendientesFragment : Fragment() {
     private fun cargarLista() {
         val inspecciones = dbHelper.obtenerPorEstado("PENDIENTE") // nuevo método
         adapter = InspeccionAdapter(inspecciones) { inspeccion ->
-            Toast.makeText(requireContext(), "Pendiente ID: ${inspeccion.id}", Toast.LENGTH_SHORT).show()
+            // Al tocar un item, llamar a MainMenu para abrir el formulario con los datos
+            (activity as? MainMenu)?.abrirFormularioConDatos(inspeccion)
         }
         recyclerView.adapter = adapter
     }
