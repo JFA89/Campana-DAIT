@@ -70,6 +70,14 @@ class MainMenu : AppCompatActivity() {
                 """.trimIndent()
 
                 fragment.webView?.evaluateJavascript("cargarDatosFormulario($json)", null)
+
+                binding.viewPager.postDelayed({
+                    val f = supportFragmentManager.findFragmentByTag("android:switcher:${R.id.view_pager}:3") as? FormularioFragment
+                    if (!inspeccion.foto1.isNullOrEmpty()) f?.cargarFotoDesdeRuta(inspeccion.foto1, 1)
+                    if (!inspeccion.foto2.isNullOrEmpty()) f?.cargarFotoDesdeRuta(inspeccion.foto2, 2)
+                    if (!inspeccion.foto3.isNullOrEmpty()) f?.cargarFotoDesdeRuta(inspeccion.foto3, 3)
+                }, 800)
+
             }
         }, 500)
     }

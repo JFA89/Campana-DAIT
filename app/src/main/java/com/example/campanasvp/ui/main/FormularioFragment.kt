@@ -27,9 +27,10 @@ import java.io.FileOutputStream
 
 class FormularioFragment : Fragment() {
 
-    public lateinit var webView: WebView
+    lateinit var webView: WebView
     private var filePathCallback: ValueCallback<Array<Uri>>? = null
     private var cameraImageUri: Uri? = null
+    private var ultimaRutaComprimida: String = ""
 
     companion object {
         private const val PERMISSIONS_REQUEST_CODE = 200
@@ -52,11 +53,14 @@ class FormularioFragment : Fragment() {
 
     private fun pedirPermisos() {
         val permisosFaltantes = mutableListOf<String>()
-        val permisos = arrayOf(
+        val permisos = mutableListOf(
             Manifest.permission.CAMERA,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.READ_MEDIA_IMAGES
+            Manifest.permission.ACCESS_FINE_LOCATION
         )
+        // READ_MEDIA_IMAGES solo en Android 13+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            permisos.add(Manifest.permission.READ_MEDIA_IMAGES)
+        }
         permisos.forEach { permiso ->
             if (ContextCompat.checkSelfPermission(requireContext(), permiso)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -77,11 +81,7 @@ class FormularioFragment : Fragment() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
-            if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-                iniciarWebView()
-            } else {
-                webView.loadData("No se concedieron permisos necesarios", "text/html", "utf-8")
-            }
+            iniciarWebView()
         }
     }
 
@@ -138,6 +138,7 @@ class FormularioFragment : Fragment() {
         }
 
         webView.webChromeClient = object : WebChromeClient() {
+
             override fun onShowFileChooser(
                 webView: WebView,
                 filePathCallback: ValueCallback<Array<Uri>>,
@@ -196,12 +197,20 @@ class FormularioFragment : Fragment() {
 
             val results: Array<Uri>? = uriOriginal?.let {
                 val uriComprimida = comprimirImagen(it)
-                it.path?.let { path -> File(path).delete() }
                 arrayOf(uriComprimida)
             }
 
             filePathCallback?.onReceiveValue(results)
             filePathCallback = null
+
+            // Avisar al JS la ruta completa de la foto comprimida
+            if (ultimaRutaComprimida.isNotEmpty()) {
+                val ruta = ultimaRutaComprimida
+                webView.post {
+                    webView.evaluateJavascript("recibirRutaFoto('$ruta')", null)
+                }
+                ultimaRutaComprimida = ""
+            }
         }
     }
 
@@ -217,9 +226,14 @@ class FormularioFragment : Fragment() {
             imagenOriginal, maxAncho, nuevoAlto, true
         )
 
+        // Guardar en carpeta InspeccionesDAIT
+        val storageDir = File(
+            requireContext().getExternalFilesDir(null), "InspeccionesDAIT"
+        ).also { if (!it.exists()) it.mkdirs() }
+
         val archivoComprimido = File(
-            requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-            "foto_comprimida_${System.currentTimeMillis()}.jpg"
+            storageDir,
+            "foto_${System.currentTimeMillis()}.jpg"
         )
 
         val outputStream = FileOutputStream(archivoComprimido)
@@ -230,6 +244,23 @@ class FormularioFragment : Fragment() {
         imagenOriginal.recycle()
         imagenRedimensionada.recycle()
 
+        // Guardar la ruta para avisarle al JS después
+        ultimaRutaComprimida = archivoComprimido.absolutePath
+
         return Uri.fromFile(archivoComprimido)
     }
+
+    fun cargarFotoDesdeRuta(ruta: String, slot: Int) {
+        val archivo = File(ruta)
+        if (!archivo.exists()) return
+
+        val bytes = archivo.readBytes()
+        val base64 = android.util.Base64.encodeToString(bytes, android.util.Base64.NO_WRAP)
+        val dataUrl = "data:image/jpeg;base64,$base64"
+
+        webView.post {
+            webView.evaluateJavascript("mostrarFotoGuardada('$dataUrl', $slot)", null)
+        }
+    }
+
 }

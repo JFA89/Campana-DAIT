@@ -233,16 +233,19 @@
             <label class="form-label fw-normal" for="foto1">Foto 1</label>
             <input type="file" id="foto1" name="foto1" class="form-control" accept="image/*" onchange="previewFoto(this,'prev1')">
             <img id="prev1" class="hidden mt-2" style="width:80px;height:80px;object-fit:cover;border-radius:4px;border:1px solid #ccc">
+            <input type="text" id="urlfoto1" name="urlfoto1" value="" disabled>
           </div>
           <div class="mb-2">
             <label class="form-label fw-normal" for="foto2">Foto 2</label>
             <input type="file" id="foto2" name="foto2" class="form-control" accept="image/*" onchange="previewFoto(this,'prev2')">
             <img id="prev2" class="hidden mt-2" style="width:80px;height:80px;object-fit:cover;border-radius:4px;border:1px solid #ccc">
+            <input type="text" id="urlfoto2" name="urlfoto2" value="" disabled>
           </div>
           <div class="mb-2">
             <label class="form-label fw-normal" for="foto3">Foto 3</label>
             <input type="file" id="foto3" name="foto3" class="form-control" accept="image/*" onchange="previewFoto(this,'prev3')">
             <img id="prev3" class="hidden mt-2" style="width:80px;height:80px;object-fit:cover;border-radius:4px;border:1px solid #ccc">
+            <input type="text" id="urlfoto3" name="urlfoto3" value="" disabled>
           </div>
           <p id="validarFotos" class="invalid-feedback hidden">Las fotos no deben superar 5 MB cada una</p>
         </div>
@@ -278,6 +281,8 @@
   var zonas = {};
   var inspectores = {};
   var instalacion = {};
+  var rutasFotos = ["", "", ""];
+
 
   fetch('data/zonas.json')
     .then(function(r) { return r.json(); })
@@ -468,6 +473,29 @@ function autoInformacion() {
 
   // ── UTILIDADES ────────────────────────────────────────────────────────────────
 
+
+  function mostrarFotoGuardada(dataUrl, slot) {
+    // Mostrar preview
+    var prev = document.getElementById('prev' + slot);
+    if (prev) {
+        prev.src = dataUrl;
+        prev.classList.remove('hidden');
+    }
+    // Guardar la ruta en rutasFotos para que se incluya al guardar/enviar
+    rutasFotos[slot - 1] = dataUrl;
+}
+
+  function recibirRutaFoto(ruta) {
+    for (var i = 0; i < 3; i++) {
+      if (rutasFotos[i] === "") {
+        rutasFotos[i] = ruta;
+        // Llenar el campo hidden correspondiente
+        document.getElementById('urlfoto' + (i + 1)).value = ruta;
+        break;
+      }
+    }
+  }
+
   function volver() { history.back(); }
 
   function isEmail(email) {
@@ -599,12 +627,20 @@ function ajustarAlturaTextarea(elemento) {
 
     var resultado = Android.enviar(recolectarDatos());
     var res = JSON.parse(resultado);
-    if (res.ok) {
-      alert("Formulario enviado correctamente");
-    } else {
-      alert("Error al enviar: " + res.error);
+
+    if (!res.ok) {
+      alert("Error al procesar: " + res.error);
       boton.disabled = false;
+      return;
     }
+
+    if (res.estado === "ENVIADO") {
+      alert("✅ Formulario enviado correctamente al servidor.");
+    } else if (res.estado === "PENDIENTE") {
+      alert("⚠️ Sin conexión al servidor. El formulario quedó guardado como PENDIENTE y se reintentará luego.");
+    }
+
+    boton.disabled = false;
   }
 
   function GuardarFormu() {
@@ -646,6 +682,53 @@ function ajustarAlturaTextarea(elemento) {
 
   // ── ON LOAD ───────────────────────────────────────────────────────────────────
 
+  function limpiarFormulario() {
+    // Reset nativo del form
+    document.getElementById('formInspeccion').reset();
+
+    // Campos que reset() no limpia bien por ser disabled o readonly
+    document.getElementById('estado').value = '';
+    document.getElementById('coordenadas').value = '';
+    document.getElementById('sucursal').value = '';
+
+    // Resetear selects anidados
+    var selPartido = document.getElementById('Partido');
+    removeOptions(selPartido);
+    selPartido.add(new Option('-- Primero seleccioná una empresa --', ''));
+    selPartido.disabled = true;
+
+    var selLocalidad = document.getElementById('Localidad');
+    removeOptions(selLocalidad);
+    selLocalidad.add(new Option('-- Primero seleccioná un partido --', ''));
+    selLocalidad.disabled = true;
+
+    // Resetear fotos
+    rutasFotos = ['', '', ''];
+    document.getElementById('urlfoto1').value = '';
+    document.getElementById('urlfoto2').value = '';
+    document.getElementById('urlfoto3').value = '';
+    document.getElementById('prev1').src = '';
+    document.getElementById('prev1').classList.add('hidden');
+    document.getElementById('prev2').src = '';
+    document.getElementById('prev2').classList.add('hidden');
+    document.getElementById('prev3').src = '';
+    document.getElementById('prev3').classList.add('hidden');
+
+    // Limpiar errores de validación
+    document.querySelectorAll('.is-invalid').forEach(function(el) {
+      el.classList.remove('is-invalid');
+    });
+    document.querySelectorAll('.invalid-feedback').forEach(function(el) {
+      el.classList.add('hidden');
+    });
+
+    // Restaurar fecha de hoy y GPS
+    document.getElementById('fechaCarga').valueAsDate = new Date();
+    document.getElementById('botonE').disabled = false;
+    autoConclusion();
+    obtenerUbicacion();
+  }
+
   window.onload = function() {
     obtenerUbicacion();
     autoConclusion();
@@ -676,9 +759,9 @@ function ajustarAlturaTextarea(elemento) {
       conclusion:     document.getElementById("conclusion").value,
       instalacion:    document.getElementById("instalacion").value,
       informacionDisp:document.getElementById("informacionDisp").value,
-      foto1:          document.getElementById("foto1").files[0]?.name || "",
-      foto2:          document.getElementById("foto2").files[0]?.name || "",
-      foto3:          document.getElementById("foto3").files[0]?.name || ""
+      foto1: rutasFotos[0] || document.getElementById('urlfoto1').value,
+      foto2: rutasFotos[1] || document.getElementById('urlfoto2').value,
+      foto3: rutasFotos[2] || document.getElementById('urlfoto3').value,
     });
   }
 
@@ -765,6 +848,11 @@ function ajustarAlturaTextarea(elemento) {
             }, 100);
         }
     }, 100);
+    // Al final de cargarDatosFormulario, antes de cerrar la función:
+    if (datos.foto1) { rutasFotos[0] = datos.foto1; document.getElementById('urlfoto1').value = datos.foto1; }
+    if (datos.foto2) { rutasFotos[1] = datos.foto2; document.getElementById('urlfoto2').value = datos.foto2; }
+    if (datos.foto3) { rutasFotos[2] = datos.foto3; document.getElementById('urlfoto3').value = datos.foto3; }
+
 }
 
 
