@@ -2,14 +2,16 @@ package com.example.campanasvp
 
 import android.content.ContentValues
 import android.content.Context
+import android.util.Base64
 import android.webkit.JavascriptInterface
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import java.net.URLEncoder
 import java.util.concurrent.TimeUnit
+import java.io.File
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 import javax.net.ssl.*
 import java.security.cert.X509Certificate
 
@@ -38,62 +40,15 @@ class AndroidBridge(private val context: Context) {
             val values = armarValues(json, "PENDIENTE")
             val id = db.insert("inspecciones", null, values)
 
-            // 2. Intentar enviar al servidor
-            val empresa   = URLEncoder.encode(json.optString("empresa"), "UTF-8")
-            val recrel    = URLEncoder.encode(json.optString("recrel"), "UTF-8")
-            val fechaCarga     = URLEncoder.encode(json.optString("fechaCarga"), "UTF-8")
-            val Partido     = URLEncoder.encode(json.optString("Partido"), "UTF-8")
-            val Localidad     = URLEncoder.encode(json.optString("Localidad"), "UTF-8")
-            val sucursal     = URLEncoder.encode(json.optString("sucursal"), "UTF-8")
-            val zona     = URLEncoder.encode(json.optString("zona"), "UTF-8")
-            val calle     = URLEncoder.encode(json.optString("calle"), "UTF-8")
-            val num_calle     = URLEncoder.encode(json.optString("num_calle"), "UTF-8")
-            val entreCalle     = URLEncoder.encode(json.optString("entreCalle"), "UTF-8")
-            val inspector = URLEncoder.encode(json.optString("inspector"), "UTF-8")
-            val descripcion = URLEncoder.encode(json.optString("descripcion"), "UTF-8")
-            val presencia = URLEncoder.encode(json.optString("presencia"), "UTF-8")
-            val normativa = URLEncoder.encode(json.optString("normativa"), "UTF-8")
-            val conclusion = URLEncoder.encode(json.optString("conclusion"), "UTF-8")
-            val instalacion = URLEncoder.encode(json.optString("instalacion"), "UTF-8")
-            val informacionDisp = URLEncoder.encode(json.optString("informacionDisp"), "UTF-8")
-            val fotos = "N"//FOTOS S/N este despues preguntar por las url guardadas si estan vacias es N sino S
-            val coordenadas = URLEncoder.encode(json.optString("coordenadas"), "UTF-8")
-            //fechaCreacion
-
-
-
-
-
-
-            val url = "http://www.enre.gov.ar/InspeccionesGAP.nsf/RecibirFormulario?openagent" +
-                    "&empresa=$empresa" +
-                    "&recrel=$recrel" +
-                    "&fecha=$fechaCarga" +
-                    "&Partido=$Partido" +
-                    "&Localidad=$Localidad" +
-                    "&sucursal=$sucursal" +
-                    "&zona=$zona" +
-                    "&calle=$calle" +
-                    "&num_calle=$num_calle" +
-                    "&entreCalle=$entreCalle" +
-                    "&inspector=$inspector" +
-                    "&descripcion=$descripcion" +
-                    "&presencia=$presencia" +
-                    "&normativa=$normativa" +
-                    "&conclusion=$conclusion" +
-                    "&instalacion=$instalacion" +
-                    "&informacionDisp=$informacionDisp" +
-                    "&fotos=$fotos" +
-                    "&coordenadas=$coordenadas"
-
-            val respuesta = hacerGet(url)
+            // 2. Intentar enviar al servidor por POST multipart
+            val respuesta = hacerPost(json)
 
             if (respuesta.trim() == "OK") {
-                // 3. Si el servidor responde OK, actualizar estado a ENVIADO
+                // 3. Servidor respondió OK → actualizar a ENVIADO
                 DBHelper(context).actualizarEstado(id, "ENVIADO")
                 """{"ok": true, "id": $id, "estado": "ENVIADO"}"""
             } else {
-                // Quedó como PENDIENTE, se reintentará luego
+                // Quedó como PENDIENTE
                 """{"ok": true, "id": $id, "estado": "PENDIENTE", "detalle": "Sin respuesta del servidor"}"""
             }
 
@@ -102,18 +57,72 @@ class AndroidBridge(private val context: Context) {
         }
     }
 
-    private fun hacerGet(url: String): String {
+    private fun hacerPost(json: JSONObject): String {
         return try {
             val client = clienteHttpConfiable()
-            val request = Request.Builder().url(url).build()
+
+            // ── Fotos como base64 ─────────────────────────────────────────────
+            val rutaFoto1 = json.optString("foto1")
+            val rutaFoto2 = json.optString("foto2")
+            val rutaFoto3 = json.optString("foto3")
+
+            val base64Foto1 = archivoABase64(rutaFoto1)
+            val base64Foto2 = archivoABase64(rutaFoto2)
+            val base64Foto3 = archivoABase64(rutaFoto3)
+
+            val tienesFotos = base64Foto1.isNotEmpty() ||
+                    base64Foto2.isNotEmpty() ||
+                    base64Foto3.isNotEmpty()
+
+            // ── Campos de texto + fotos base64 como form-data ─────────────────
+            val builder = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("empresa",         json.optString("empresa"))
+                .addFormDataPart("recrel",          json.optString("recrel"))
+                .addFormDataPart("fecha",           json.optString("fechaCarga"))
+                .addFormDataPart("Partido",         json.optString("Partido"))
+                .addFormDataPart("Localidad",       json.optString("Localidad"))
+                .addFormDataPart("sucursal",        json.optString("sucursal"))
+                .addFormDataPart("zona",            json.optString("zona"))
+                .addFormDataPart("calle",           json.optString("calle"))
+                .addFormDataPart("num_calle",       json.optString("num_calle"))
+                .addFormDataPart("entreCalle",      json.optString("entreCalle"))
+                .addFormDataPart("inspector",       json.optString("inspector"))
+                .addFormDataPart("descripcion",     json.optString("descripcion"))
+                .addFormDataPart("presencia",       json.optString("presencia"))
+                .addFormDataPart("normativa",       json.optString("normativa"))
+                .addFormDataPart("conclusion",      json.optString("conclusion"))
+                .addFormDataPart("instalacion",     json.optString("instalacion"))
+                .addFormDataPart("informacionDisp", json.optString("informacionDisp"))
+                .addFormDataPart("coordenadas",     json.optString("coordenadas"))
+                .addFormDataPart("fotos",           if (tienesFotos) "S" else "N")
+                .addFormDataPart("foto1",           base64Foto1)
+                .addFormDataPart("foto2",           base64Foto2)
+                .addFormDataPart("foto3",           base64Foto3)
+
+            val request = Request.Builder()
+                .url("http://www.enre.gov.ar/InspeccionesGAP.nsf/RecibirFormulario3?openagent")
+                .post(builder.build())
+                .build()
+
             val response = client.newCall(request).execute()
             response.body?.string() ?: ""
+
         } catch (e: Exception) {
             ""
         }
     }
 
-    // Cliente que acepta certificados autofirmados (para servidor interno con IP)
+    // Convierte archivo a base64, retorna string vacío si no existe
+    private fun archivoABase64(ruta: String): String {
+        if (ruta.isBlank()) return ""
+        val archivo = File(ruta)
+        if (!archivo.exists()) return ""
+        val bytes = archivo.readBytes()
+        return Base64.encodeToString(bytes, Base64.NO_WRAP)
+    }
+
+    // Cliente que acepta certificados autofirmados (servidor interno)
     private fun clienteHttpConfiable(): OkHttpClient {
         val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
             override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {}
@@ -124,8 +133,8 @@ class AndroidBridge(private val context: Context) {
         sslContext.init(null, trustAllCerts, java.security.SecureRandom())
 
         return OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS)
             .sslSocketFactory(sslContext.socketFactory, trustAllCerts[0] as X509TrustManager)
             .hostnameVerifier { _, _ -> true }
             .build()
