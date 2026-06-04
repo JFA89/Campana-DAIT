@@ -101,7 +101,7 @@ class AndroidBridge(private val context: Context) {
                 .addFormDataPart("foto3",           base64Foto3)
 
             val request = Request.Builder()
-                .url("http://www.enre.gov.ar/InspeccionesGAP.nsf/RecibirFormulario3?openagent")
+                .url("http://www.enre.gov.ar/IMAGENES.nsf/RecibirFormulario?openagent")
                 .post(builder.build())
                 .build()
 
