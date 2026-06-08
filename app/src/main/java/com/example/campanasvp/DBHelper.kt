@@ -5,7 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class DBHelper(context: Context) : SQLiteOpenHelper(context, "inspecciones.db", null, 1) {
+class DBHelper(context: Context) : SQLiteOpenHelper(context, "inspecciones.db", null, 2) {
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL("""
@@ -31,16 +31,20 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "inspecciones.db", 
                 conclusion TEXT,
                 instalacion TEXT,
                 informacion_disp TEXT,
-                foto1 TEXT,
-                foto2 TEXT,
-                foto3 TEXT
+                urlfoto1 TEXT,
+                urlfoto2 TEXT,
+                urlfoto3 TEXT
             )
         """.trimIndent())
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS inspecciones")
-        onCreate(db)
+        if (oldVersion < 2) {
+            // Agrega las columnas nuevas sin borrar registros existentes
+            db.execSQL("ALTER TABLE inspecciones ADD COLUMN urlfoto1 TEXT DEFAULT ''")
+            db.execSQL("ALTER TABLE inspecciones ADD COLUMN urlfoto2 TEXT DEFAULT ''")
+            db.execSQL("ALTER TABLE inspecciones ADD COLUMN urlfoto3 TEXT DEFAULT ''")
+        }
     }
 
     // ── ACTUALIZAR ESTADO ─────────────────────────────────────────────────────
@@ -92,9 +96,9 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "inspecciones.db", 
                 conclusion      = cursor.getString(cursor.getColumnIndexOrThrow("conclusion")),
                 instalacion     = cursor.getString(cursor.getColumnIndexOrThrow("instalacion")),
                 informacionDisp = cursor.getString(cursor.getColumnIndexOrThrow("informacion_disp")),
-                foto1           = cursor.getString(cursor.getColumnIndexOrThrow("foto1")),
-                foto2           = cursor.getString(cursor.getColumnIndexOrThrow("foto2")),
-                foto3           = cursor.getString(cursor.getColumnIndexOrThrow("foto3"))
+                urlfoto1        = cursor.getString(cursor.getColumnIndexOrThrow("urlfoto1")),
+                urlfoto2        = cursor.getString(cursor.getColumnIndexOrThrow("urlfoto2")),
+                urlfoto3        = cursor.getString(cursor.getColumnIndexOrThrow("urlfoto3"))
             ))
         }
         cursor.close()

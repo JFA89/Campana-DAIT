@@ -233,19 +233,19 @@
             <label class="form-label fw-normal" for="foto1">Foto 1</label>
             <input type="file" id="foto1" name="foto1" class="form-control" accept="image/*" onchange="previewFoto(this,'prev1')">
             <img id="prev1" class="hidden mt-2" style="width:80px;height:80px;object-fit:cover;border-radius:4px;border:1px solid #ccc">
-            <input type="text" id="urlfoto1" name="urlfoto1" value="" disabled>
+            <input type="text" id="urlfoto1" name="urlfoto1" value="" >
           </div>
           <div class="mb-2">
             <label class="form-label fw-normal" for="foto2">Foto 2</label>
             <input type="file" id="foto2" name="foto2" class="form-control" accept="image/*" onchange="previewFoto(this,'prev2')">
             <img id="prev2" class="hidden mt-2" style="width:80px;height:80px;object-fit:cover;border-radius:4px;border:1px solid #ccc">
-            <input type="text" id="urlfoto2" name="urlfoto2" value="" disabled>
+            <input type="text" id="urlfoto2" name="urlfoto2" value="" >
           </div>
           <div class="mb-2">
             <label class="form-label fw-normal" for="foto3">Foto 3</label>
             <input type="file" id="foto3" name="foto3" class="form-control" accept="image/*" onchange="previewFoto(this,'prev3')">
             <img id="prev3" class="hidden mt-2" style="width:80px;height:80px;object-fit:cover;border-radius:4px;border:1px solid #ccc">
-            <input type="text" id="urlfoto3" name="urlfoto3" value="" disabled>
+            <input type="text" id="urlfoto3" name="urlfoto3" value="" >
           </div>
           <p id="validarFotos" class="invalid-feedback hidden">Las fotos no deben superar 5 MB cada una</p>
         </div>
@@ -759,9 +759,9 @@ function ajustarAlturaTextarea(elemento) {
       conclusion:     document.getElementById("conclusion").value,
       instalacion:    document.getElementById("instalacion").value,
       informacionDisp:document.getElementById("informacionDisp").value,
-      foto1: rutasFotos[0] || document.getElementById('urlfoto1').value,
-      foto2: rutasFotos[1] || document.getElementById('urlfoto2').value,
-      foto3: rutasFotos[2] || document.getElementById('urlfoto3').value,
+      urlfoto1: document.getElementById('urlfoto1').value,
+      urlfoto2: document.getElementById('urlfoto2').value,
+      urlfoto3: document.getElementById('urlfoto3').value
     });
   }
 
@@ -785,6 +785,9 @@ function ajustarAlturaTextarea(elemento) {
     document.getElementById('conclusion').value = datos.conclusion || '';
     document.getElementById('informacionDisp').value = datos.informacionDisp || '';
     document.getElementById('estado').value = datos.estado || '';
+    document.getElementById('urlfoto1').value = datos.urlfoto1 || '';
+    document.getElementById('urlfoto2').value = datos.urlfoto2 || '';
+    document.getElementById('urlfoto3').value = datos.urlfoto3 || '';
 
     // Selects que necesitan carga previa de opciones
     document.getElementById('empresa').value = datos.empresa || '';
@@ -848,11 +851,6 @@ function ajustarAlturaTextarea(elemento) {
             }, 100);
         }
     }, 100);
-    // Al final de cargarDatosFormulario, antes de cerrar la función:
-    if (datos.foto1) { rutasFotos[0] = datos.foto1; document.getElementById('urlfoto1').value = datos.foto1; }
-    if (datos.foto2) { rutasFotos[1] = datos.foto2; document.getElementById('urlfoto2').value = datos.foto2; }
-    if (datos.foto3) { rutasFotos[2] = datos.foto3; document.getElementById('urlfoto3').value = datos.foto3; }
-
 }
 
 

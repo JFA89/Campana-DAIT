@@ -44,11 +44,9 @@ class AndroidBridge(private val context: Context) {
             val respuesta = hacerPost(json)
 
             if (respuesta.trim() == "OK") {
-                // 3. Servidor respondió OK → actualizar a ENVIADO
                 DBHelper(context).actualizarEstado(id, "ENVIADO")
                 """{"ok": true, "id": $id, "estado": "ENVIADO"}"""
             } else {
-                // Quedó como PENDIENTE
                 """{"ok": true, "id": $id, "estado": "PENDIENTE", "detalle": "Sin respuesta del servidor"}"""
             }
 
@@ -61,20 +59,16 @@ class AndroidBridge(private val context: Context) {
         return try {
             val client = clienteHttpConfiable()
 
-            // ── Fotos como base64 ─────────────────────────────────────────────
-            val rutaFoto1 = json.optString("foto1")
-            val rutaFoto2 = json.optString("foto2")
-            val rutaFoto3 = json.optString("foto3")
-
-            val base64Foto1 = archivoABase64(rutaFoto1)
-            val base64Foto2 = archivoABase64(rutaFoto2)
-            val base64Foto3 = archivoABase64(rutaFoto3)
+            // ── Fotos: usar urlfoto1/2/3 directamente ────────────────────────
+            val base64Foto1 = archivoABase64(json.optString("urlfoto1"))
+            val base64Foto2 = archivoABase64(json.optString("urlfoto2"))
+            val base64Foto3 = archivoABase64(json.optString("urlfoto3"))
 
             val tienesFotos = base64Foto1.isNotEmpty() ||
                     base64Foto2.isNotEmpty() ||
                     base64Foto3.isNotEmpty()
 
-            // ── Campos de texto + fotos base64 como form-data ─────────────────
+            // ── Campos de texto + fotos base64 ───────────────────────────────
             val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("empresa",         json.optString("empresa"))
@@ -113,7 +107,7 @@ class AndroidBridge(private val context: Context) {
         }
     }
 
-    // Convierte archivo a base64, retorna string vacío si no existe
+    // Convierte archivo a base64 usando la ruta completa, retorna vacío si no existe
     private fun archivoABase64(ruta: String): String {
         if (ruta.isBlank()) return ""
         val archivo = File(ruta)
@@ -163,9 +157,9 @@ class AndroidBridge(private val context: Context) {
             put("conclusion",       json.optString("conclusion"))
             put("instalacion",      json.optString("instalacion"))
             put("informacion_disp", json.optString("informacionDisp"))
-            put("foto1",            json.optString("foto1"))
-            put("foto2",            json.optString("foto2"))
-            put("foto3",            json.optString("foto3"))
+            put("urlfoto1",         json.optString("urlfoto1"))
+            put("urlfoto2",         json.optString("urlfoto2"))
+            put("urlfoto3",         json.optString("urlfoto3"))
         }
     }
 }

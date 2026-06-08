@@ -22,7 +22,7 @@ data class Inspeccion(
     val conclusion: String,
     val instalacion: String,
     val informacionDisp: String,
-    val foto1: String,
-    val foto2: String,
-    val foto3: String
+    val urlfoto1: String,
+    val urlfoto2: String,
+    val urlfoto3: String
 )
