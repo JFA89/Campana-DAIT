@@ -27,7 +27,7 @@ class InspeccionAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = inspecciones[position]
-        holder.tvId.text = "ID: ${item.id}"
+        holder.tvId.text = "Registro #${inspecciones.size - position}"
         holder.tvEmpresa.text = "Empresa: ${item.empresa}"
         holder.tvPartidoLocalidad.text = "Partido: ${item.partido} - Localidad: ${item.localidad}"
         holder.tvCalle.text = "Calle: ${item.calle} ${item.numCalle}"
