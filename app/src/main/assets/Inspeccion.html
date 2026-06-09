@@ -676,9 +676,9 @@ function ajustarAlturaTextarea(elemento) {
     }
 
     if (res.estado === "ENVIADO") {
-      alert("✅ Formulario enviado correctamente al servidor.");
+      alert("Formulario enviado correctamente al servidor.");
     } else if (res.estado === "PENDIENTE") {
-      alert("⚠️ PENDIENTE. Respuesta servidor: " + res.detalle);
+      alert("Sin respuesta del servidor: Formulario PENDIENTE.");
     }
 
     boton.disabled = false;
