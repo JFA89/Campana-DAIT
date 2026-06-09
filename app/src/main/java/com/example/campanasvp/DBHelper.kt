@@ -56,6 +56,10 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "inspecciones.db", 
         writableDatabase.update("inspecciones", values, "id = ?", arrayOf(id.toString()))
     }
 
+    fun eliminar(id: Long) {
+        writableDatabase.delete("inspecciones", "id = ?", arrayOf(id.toString()))
+    }
+
     // ── CONSULTAS ─────────────────────────────────────────────────────────────
 
     fun obtenerTodas(): List<Inspeccion> {

@@ -1,5 +1,6 @@
 package com.example.campanasvp.ui.main
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,10 +38,27 @@ class PendientesFragment : Fragment() {
     }
 
     fun cargarLista() {
-        val inspecciones = dbHelper.obtenerPorEstado("PENDIENTE") // nuevo método
+        val inspecciones = dbHelper.obtenerPorEstado("PENDIENTE")
         adapter = InspeccionAdapter(inspecciones) { inspeccion ->
-            // Al tocar un item, llamar a MainMenu para abrir el formulario con los datos
-            (activity as? MainMenu)?.abrirFormularioConDatos(inspeccion)
+            AlertDialog.Builder(requireContext())
+                .setTitle("Inspección #${inspeccion.id}")
+                .setMessage("${inspeccion.empresa}\n${inspeccion.localidad} — ${inspeccion.fechaCarga}\n${inspeccion.inspector}")
+                .setPositiveButton("Ir al formulario") { _, _ ->
+                    (activity as? MainMenu)?.abrirFormularioConDatos(inspeccion)
+                }
+                .setNegativeButton("Eliminar") { _, _ ->
+                    AlertDialog.Builder(requireContext())
+                        .setTitle("Confirmar eliminación")
+                        .setMessage("¿Eliminar la inspección #${inspeccion.id}?")
+                        .setPositiveButton("Eliminar") { _, _ ->
+                            dbHelper.eliminar(inspeccion.id)
+                            cargarLista()
+                        }
+                        .setNegativeButton("Cancelar", null)
+                        .show()
+                }
+                .setNeutralButton("Cancelar", null)
+                .show()
         }
         recyclerView.adapter = adapter
     }
