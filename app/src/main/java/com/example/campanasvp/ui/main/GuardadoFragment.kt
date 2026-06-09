@@ -34,7 +34,7 @@ class GuardadoFragment : Fragment() {
         cargarLista()
     }
 
-    private fun cargarLista() {
+    fun cargarLista() {
         val inspecciones = dbHelper.obtenerPorEstado("GUARDADO")
         adapter = InspeccionAdapter(inspecciones) { inspeccion ->
             // Al tocar un item, llamar a MainMenu para abrir el formulario con los datos

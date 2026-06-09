@@ -36,7 +36,7 @@ class PendientesFragment : Fragment() {
         cargarLista()
     }
 
-    private fun cargarLista() {
+    fun cargarLista() {
         val inspecciones = dbHelper.obtenerPorEstado("PENDIENTE") // nuevo método
         adapter = InspeccionAdapter(inspecciones) { inspeccion ->
             // Al tocar un item, llamar a MainMenu para abrir el formulario con los datos

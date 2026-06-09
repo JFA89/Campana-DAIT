@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.campanasvp.ui.main.SectionsPagerAdapter
 import com.example.campanasvp.ui.main.FormularioFragment
 import com.example.campanasvp.databinding.ActivityMainMenuBinding
+import com.example.campanasvp.ui.main.EnviadosFragment
+import com.example.campanasvp.ui.main.GuardadoFragment
+import com.example.campanasvp.ui.main.PendientesFragment
 
 class MainMenu : AppCompatActivity() {
 
@@ -38,14 +41,18 @@ class MainMenu : AppCompatActivity() {
         // Limpiar formulario al tocar el tab 3, salvo que vengas de abrirFormularioConDatos
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageSelected(position: Int) {
-                if (position == 3) {
-                    if (!cargandoDatosGuardados) {
-                        val f = supportFragmentManager.findFragmentByTag(
-                            "android:switcher:${R.id.view_pager}:3"
-                        ) as? FormularioFragment
-                        f?.webView?.evaluateJavascript("limpiarFormulario()", null)
+                // Refrescar el fragment que se muestra
+                when (position) {
+                    0 -> (supportFragmentManager.findFragmentByTag("android:switcher:${R.id.view_pager}:0") as? GuardadoFragment)?.cargarLista()
+                    1 -> (supportFragmentManager.findFragmentByTag("android:switcher:${R.id.view_pager}:1") as? PendientesFragment)?.cargarLista()
+                    2 -> (supportFragmentManager.findFragmentByTag("android:switcher:${R.id.view_pager}:2") as? EnviadosFragment)?.cargarLista()
+                    3 -> {
+                        if (!cargandoDatosGuardados) {
+                            val f = supportFragmentManager.findFragmentByTag("android:switcher:${R.id.view_pager}:3") as? FormularioFragment
+                            f?.webView?.evaluateJavascript("limpiarFormulario()", null)
+                        }
+                        cargandoDatosGuardados = false
                     }
-                    cargandoDatosGuardados = false
                 }
             }
             override fun onPageScrolled(p: Int, o: Float, px: Int) {}
