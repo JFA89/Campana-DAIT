@@ -31,6 +31,12 @@ class AndroidBridge(private val context: Context) {
         }
     }
 
+    @JavascriptInterface
+    fun irATab(tab: Int) {
+        (context as? MainMenu)?.runOnUiThread {
+            (context as? MainMenu)?.irATab(tab)
+        }
+    }
 
     @JavascriptInterface
     fun enviar(jsonString: String): String {

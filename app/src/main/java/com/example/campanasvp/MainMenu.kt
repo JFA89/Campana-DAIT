@@ -110,6 +110,10 @@ class MainMenu : AppCompatActivity() {
         }, 500)
     }
 
+    fun irATab(tab: Int) {
+        binding.viewPager.currentItem = tab
+    }
+
     private fun escaparJson(texto: String): String {
         return texto
             .replace("\\", "\\\\")

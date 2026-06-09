@@ -677,20 +677,23 @@ function ajustarAlturaTextarea(elemento) {
 
     if (res.estado === "ENVIADO") {
       alert("Formulario enviado correctamente al servidor.");
+      Android.irATab(2); // tab Enviados
     } else if (res.estado === "PENDIENTE") {
-      alert("Sin respuesta del servidor: Formulario PENDIENTE.");
+      alert("Sin conexión al servidor. El formulario quedó guardado como PENDIENTE.");
+      Android.irATab(1); // tab Pendientes
     }
 
     boton.disabled = false;
   }
 
   function GuardarFormu() {
-  var resultado = Android.guardar(recolectarDatos());
-  var res = JSON.parse(resultado);
-  if (res.ok) {
-    alert("Formulario guardado correctamente (ID: " + res.id + ")");
-  } else {
-    alert("Error al guardar: " + res.error);
+    var resultado = Android.guardar(recolectarDatos());
+    var res = JSON.parse(resultado);
+    if (res.ok) {
+      alert("Formulario guardado correctamente.");
+      Android.irATab(0); // tab Guardados
+    } else {
+      alert("Error al guardar: " + res.error);
     }
   }
 
