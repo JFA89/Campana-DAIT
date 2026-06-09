@@ -233,20 +233,23 @@
             <label class="form-label fw-normal" for="foto1">Foto 1</label>
             <input type="file" id="foto1" name="foto1" class="form-control" accept="image/*" onchange="previewFoto(this,'prev1')">
             <img id="prev1" class="hidden mt-2" style="width:80px;height:80px;object-fit:cover;border-radius:4px;border:1px solid #ccc">
-            <input type="text" id="urlfoto1" name="urlfoto1" value="" >
+            <input type="text" id="urlfoto1" name="urlfoto1" value="" disabled>
           </div>
-          <div class="mb-2">
+          <div id="bloqueFoto2" class="mb-2">
             <label class="form-label fw-normal" for="foto2">Foto 2</label>
             <input type="file" id="foto2" name="foto2" class="form-control" accept="image/*" onchange="previewFoto(this,'prev2')">
             <img id="prev2" class="hidden mt-2" style="width:80px;height:80px;object-fit:cover;border-radius:4px;border:1px solid #ccc">
-            <input type="text" id="urlfoto2" name="urlfoto2" value="" >
+            <input type="text" id="urlfoto2" name="urlfoto2" value="" disabled>
           </div>
-          <div class="mb-2">
+          <div id="bloqueFoto3" class="mb-2">
             <label class="form-label fw-normal" for="foto3">Foto 3</label>
             <input type="file" id="foto3" name="foto3" class="form-control" accept="image/*" onchange="previewFoto(this,'prev3')">
             <img id="prev3" class="hidden mt-2" style="width:80px;height:80px;object-fit:cover;border-radius:4px;border:1px solid #ccc">
-            <input type="text" id="urlfoto3" name="urlfoto3" value="" >
+            <input type="text" id="urlfoto3" name="urlfoto3" value="" disabled>
           </div>
+          <button type="button" id="btnLimpiarFoto" class="btn btn-sm btn-outline-danger mt-2" onclick="limpiarUltimaFoto()" disabled>
+            Eliminar foto
+          </button>
           <p id="validarFotos" class="invalid-feedback hidden">Las fotos no deben superar 5 MB cada una</p>
         </div>
       </div>
@@ -472,7 +475,43 @@ function autoInformacion() {
 
 
   // ── UTILIDADES ────────────────────────────────────────────────────────────────
+  function actualizarEstadoBloques() {
+    var url1 = document.getElementById('urlfoto1').value;
+    var url2 = document.getElementById('urlfoto2').value;
+    var url3 = document.getElementById('urlfoto3').value;
 
+    // Mostrar/ocultar bloques foto2 y foto3
+    if (url1) document.getElementById('bloqueFoto2').classList.remove('hidden');
+    else      document.getElementById('bloqueFoto2').classList.add('hidden');
+
+    if (url2) document.getElementById('bloqueFoto3').classList.remove('hidden');
+    else      document.getElementById('bloqueFoto3').classList.add('hidden');
+
+    // Ocultar input file si ya tiene foto cargada
+    document.getElementById('foto1').style.display = url1 ? 'none' : '';
+    document.getElementById('foto2').style.display = url2 ? 'none' : '';
+    document.getElementById('foto3').style.display = url3 ? 'none' : '';
+
+    // Botón habilitado si hay al menos una foto
+    document.getElementById('btnLimpiarFoto').disabled = !url1;
+  }
+
+
+  function limpiarUltimaFoto() {
+    // Encontrar el último slot ocupado
+    var slot = 0;
+    if (document.getElementById('urlfoto1').value) slot = 1;
+    if (document.getElementById('urlfoto2').value) slot = 2;
+    if (document.getElementById('urlfoto3').value) slot = 3;
+    if (slot === 0) return;
+
+    document.getElementById('foto'    + slot).value = '';
+    document.getElementById('prev'    + slot).src   = '';
+    document.getElementById('prev'    + slot).classList.add('hidden');
+    document.getElementById('urlfoto' + slot).value = '';
+    rutasFotos[slot - 1] = '';
+    actualizarEstadoBloques();
+  }
 
   function mostrarFotoGuardada(dataUrl, slot) {
     // Mostrar preview
@@ -483,6 +522,7 @@ function autoInformacion() {
     }
     // Guardar la ruta en rutasFotos para que se incluya al guardar/enviar
     rutasFotos[slot - 1] = dataUrl;
+    actualizarEstadoBloques();
 }
 
   function recibirRutaFoto(ruta) {
@@ -494,6 +534,7 @@ function autoInformacion() {
         break;
       }
     }
+    actualizarEstadoBloques();
   }
 
   function volver() { history.back(); }
@@ -637,7 +678,7 @@ function ajustarAlturaTextarea(elemento) {
     if (res.estado === "ENVIADO") {
       alert("✅ Formulario enviado correctamente al servidor.");
     } else if (res.estado === "PENDIENTE") {
-      alert("⚠️ Sin conexión al servidor. El formulario quedó guardado como PENDIENTE y se reintentará luego.");
+      alert("⚠️ PENDIENTE. Respuesta servidor: " + res.detalle);
     }
 
     boton.disabled = false;
@@ -727,6 +768,7 @@ function ajustarAlturaTextarea(elemento) {
     document.getElementById('botonE').disabled = false;
     autoConclusion();
     obtenerUbicacion();
+    actualizarEstadoBloques();
   }
 
   window.onload = function() {

@@ -31,6 +31,7 @@ class AndroidBridge(private val context: Context) {
         }
     }
 
+
     @JavascriptInterface
     fun enviar(jsonString: String): String {
         return try {
@@ -43,12 +44,19 @@ class AndroidBridge(private val context: Context) {
             // 2. Intentar enviar al servidor por POST multipart
             val respuesta = hacerPost(json)
 
-            if (respuesta.trim() == "OK") {
+            val respuestaObj = JSONObject()
+            respuestaObj.put("ok", true)
+            respuestaObj.put("id", id)
+
+            if (respuesta.contains("OK", ignoreCase = true)) {
                 DBHelper(context).actualizarEstado(id, "ENVIADO")
-                """{"ok": true, "id": $id, "estado": "ENVIADO"}"""
+                respuestaObj.put("estado", "ENVIADO")
             } else {
-                """{"ok": true, "id": $id, "estado": "PENDIENTE", "detalle": "Sin respuesta del servidor"}"""
+                respuestaObj.put("estado", "PENDIENTE")
+                respuestaObj.put("detalle", respuesta.take(100)) // JSONObject escapa automáticamente
             }
+
+            respuestaObj.toString()  // JSON válido con escapes
 
         } catch (e: Exception) {
             """{"ok": false, "error": "${e.message}"}"""
